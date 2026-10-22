@@ -1,5 +1,6 @@
 """Carga de prompts versionados (prompts/*.yaml) y armado de mensajes."""
 
+import hashlib
 import json
 import os
 from dataclasses import dataclass
@@ -75,3 +76,11 @@ def build_messages(prompt: PromptTemplate, query: str, canary: str) -> tuple[str
         )
     messages.append({"role": "user", "content": _render_user(prompt, query)})
     return system, messages
+
+
+def prompt_fingerprint(prompt: PromptTemplate) -> str:
+    """Huella corta del contenido del prompt: cambia si se edita el YAML aunque no cambie la versión."""
+    payload = json.dumps(
+        [prompt.system, prompt.user_template, list(prompt.examples)], ensure_ascii=False, sort_keys=True
+    )
+    return hashlib.md5(payload.encode("utf-8")).hexdigest()[:8]

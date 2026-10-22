@@ -68,3 +68,51 @@ def test_get_provider_missing_key_names_variable(settings_tmp):
 def test_get_provider_unknown_name(settings_tmp):
     with pytest.raises(ConfigError):
         get_provider("openai", settings_tmp)
+
+
+def test_second_call_hits_cache_without_provider_call(settings_tmp):
+    fp = FakeProvider([VALID])
+    triage("me cobraron doble", settings_tmp, provider=fp)
+    out = triage("me cobraron doble", settings_tmp, provider=fp)
+    rec = last_metric(settings_tmp)
+    assert out.response.category == "billing" and len(fp.calls) == 1
+    assert rec["cache_hit"] is True and rec["cost_usd"] == 0.0 and rec["attempts"] == 0
+
+
+def test_no_cache_flag_bypasses(settings_tmp):
+    fp = FakeProvider([VALID, VALID])
+    triage("x", settings_tmp, provider=fp)
+    triage("x", settings_tmp, provider=fp, use_cache=False)
+    assert len(fp.calls) == 2
+
+
+def test_cache_disabled_in_settings(settings_tmp):
+    s = dataclasses.replace(settings_tmp, cache_enabled=False)
+    fp = FakeProvider([VALID, VALID])
+    triage("x", s, provider=fp)
+    triage("x", s, provider=fp)
+    assert len(fp.calls) == 2
+
+
+def test_failed_request_is_not_cached(settings_tmp):
+    with pytest.raises(TriageError):
+        triage("x", settings_tmp, provider=FakeProvider(["nope"] * 3))
+    fp = FakeProvider([VALID])
+    triage("x", settings_tmp, provider=fp)
+    assert len(fp.calls) == 1
+
+
+def test_editing_prompt_text_invalidates_cache(settings_tmp, tmp_path, monkeypatch):
+    import shutil
+
+    from triage import prompts
+
+    pdir = tmp_path / "prompts"
+    shutil.copytree(prompts.DEFAULT_PROMPTS_DIR, pdir)
+    monkeypatch.setenv("PROMPTS_DIR", str(pdir))
+    fp = FakeProvider([VALID, VALID])
+    triage("x", settings_tmp, provider=fp)
+    v1 = pdir / "v1_zero_shot.yaml"
+    v1.write_text(v1.read_text(encoding="utf-8").replace("Sos el asistente", "Sos EL asistente"), encoding="utf-8")
+    triage("x", settings_tmp, provider=fp)
+    assert len(fp.calls) == 2

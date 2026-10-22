@@ -4,10 +4,11 @@ import secrets
 from dataclasses import dataclass, field
 from typing import Literal
 
+from triage.cache import ResponseCache, cache_key
 from triage.config import ConfigError, Settings
 from triage.metrics import append_metrics, new_request_id, utc_now_iso
 from triage.pricing import PricingError, estimate_cost
-from triage.prompts import build_messages, load_prompt
+from triage.prompts import build_messages, load_prompt, prompt_fingerprint
 from triage.providers import get_provider, model_for
 from triage.providers.base import LLMParams, LLMProvider, Message, ProviderError
 from triage.providers.retry import call_with_backoff
@@ -138,6 +139,17 @@ def triage(
     )
     log = dict(request_id=request_id, source=source, provider=name, prompt_version=version)
 
+    cache = ResponseCache(settings.cache_dir, settings.cache_enabled)
+    key = cache_key(
+        name, model, f"{version}:{prompt_fingerprint(prompt)}", settings.temperature, settings.max_tokens, query
+    )
+    read_cache = settings.cache_enabled if use_cache is None else use_cache
+    cached = cache.get(key) if read_cache else None
+    if cached is not None:
+        record = _record(**log, usage=usage, status="ok", cache_hit=True)
+        append_metrics(record, settings.metrics_path)
+        return TriageOutcome(response=cached, status="ok", record=record, canary=canary)
+
     system, messages = build_messages(prompt, query, canary)
     try:
         response = _call_until_valid(provider, system, messages, params, settings, usage)
@@ -146,6 +158,7 @@ def triage(
         append_metrics(record, settings.metrics_path)
         raise TriageError(str(e), record) from e
 
+    cache.set(key, response)
     record = _record(**log, usage=usage, status="ok")
     append_metrics(record, settings.metrics_path)
     return TriageOutcome(response=response, status="ok", record=record, canary=canary)
