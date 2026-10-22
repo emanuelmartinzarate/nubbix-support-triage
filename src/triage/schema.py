@@ -60,3 +60,19 @@ def blocked_response(reason: str) -> TriageResponse:
         category="other",
         actions=[f"Revisión manual: posible intento de manipulación ({reason})"],
     )
+
+
+# JSON Schema enviado como salida estructurada nativa a los proveedores que la soportan.
+# Es deliberadamente simple (tipos, enum, required): las cotas finas (rango de confidence,
+# 1-5 acciones, strings no vacíos) las valida siempre Pydantic.
+TRIAGE_JSON_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "answer": {"type": "string"},
+        "confidence": {"type": "number"},
+        "category": {"type": "string", "enum": ["billing", "technical", "account", "other"]},
+        "actions": {"type": "array", "items": {"type": "string"}},
+    },
+    "required": ["answer", "confidence", "category", "actions"],
+    "additionalProperties": False,
+}

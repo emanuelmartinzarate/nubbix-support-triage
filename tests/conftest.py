@@ -38,3 +38,30 @@ class FakeProvider:
             latency_s=0.01,
             model=params.model,
         )
+
+
+import dataclasses
+
+import pytest
+
+from triage.config import load_settings
+
+
+@pytest.fixture
+def settings_tmp(tmp_path, monkeypatch):
+    """Settings aisladas: métricas y caché en tmp, sin leer .env, modelo con precio conocido."""
+    for var in ("LLM_PROVIDER", "PROMPT_VERSION", "CACHE_ENABLED", "GUARDRAILS_ENABLED", "MODERATION_ENABLED"):
+        monkeypatch.delenv(var, raising=False)
+    base = load_settings(env_file=None)
+    return dataclasses.replace(
+        base,
+        anthropic_api_key="test-key",
+        metrics_path=tmp_path / "metrics.jsonl",
+        cache_dir=tmp_path / "cache",
+    )
+
+
+def last_metric(settings):
+    import json
+
+    return json.loads(settings.metrics_path.read_text(encoding="utf-8").splitlines()[-1])
