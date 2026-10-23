@@ -75,7 +75,9 @@ docker compose run --rm evals --all       # suite de evals completa
 ```
 
 `data/` y `evals/results/` se montan como volúmenes: las métricas y los resultados quedan en tu
-máquina. El contenedor corre con tu UID/GID (default 1000).
+máquina. El contenedor corre con el `UID`/`GID` definidos en `.env` (default 1000). Si tu usuario
+tiene otro id, poné el resultado de `id -u` / `id -g` en `.env`; si no, el contenedor no puede escribir
+en `data/` y la CLI termina con exit 1 y un mensaje de permisos.
 
 ### Opción B: entorno local
 
@@ -279,7 +281,7 @@ que las requests concurrentes de la API no se entrelacen.
 | `latency_s` | tiempo de las llamadas al LLM |
 | `cost_usd` | costo estimado del request |
 | `attempts` | cuántas veces hubo que reintentar por JSON inválido (0 = caché o bloqueado antes del LLM) |
-| `cache_hit`, `guardrail`, `status`, `error` | por qué la respuesta salió como salió |
+| `cache_hit`, `guardrail`, `status`, `error` | por qué la respuesta salió como salió; `guardrail` también registra una moderación degradada (`moderation_unavailable` / `moderation_unparseable`) aunque no bloquee |
 
 **Cómo se calcula el costo** (`src/triage/pricing.py`):
 
@@ -302,7 +304,7 @@ Defensa en capas (`GUARDRAILS_ENABLED=true`):
 
 | Capa | Dónde | Qué hace | Costo |
 |---|---|---|---|
-| 1. Heurística | `guardrails/input_guard.py` | normaliza (NFKC, sin acentos ni caracteres de ancho cero, minúsculas), decodifica base64 y busca patrones de injection, exfiltración y cambio de rol en ES/EN; bloquea intentos de cerrar `</ticket>`; límite de 4.000 caracteres | gratis |
+| 1. Heurística | `guardrails/input_guard.py` | normaliza (NFKC, sin acentos ni caracteres invisibles de formato —categoría Unicode Cf—, minúsculas), decodifica base64 y busca patrones de injection, exfiltración y cambio de rol en ES/EN; bloquea intentos de cerrar `</ticket>`; límite de 4.000 caracteres | gratis |
 | 2. Moderación LLM | `guardrails/moderation.py` + `prompts/moderation.yaml` | clasificador barato de manipulación / abuso; fail-open si falla (las otras capas siguen) | ~USD 0.000075 por ticket (Haiku) |
 | 3. Prompt | `prompts/v3_few_shot_rules.yaml` | el ticket va delimitado y declarado como dato no confiable; reglas de no revelarse, no cambiar de rol, no prometer reintegros | incluido |
 | 4. Salida | `guardrails/output_guard.py` | bloquea la respuesta si contiene el **canary token** aleatorio del system prompt, 8 palabras seguidas del system prompt, o compromisos no autorizados ("ya te reintegramos", "te garantizamos el reembolso"); se aplica también a respuestas cacheadas | gratis |

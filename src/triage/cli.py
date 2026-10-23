@@ -58,6 +58,8 @@ def main(argv: list[str] | None = None) -> int:
         )
     except (ConfigError, PromptNotFoundError) as e:
         return _fail(str(e), EXIT_USAGE)
+    except OSError as e:
+        return _fail(f"no se pudieron escribir las métricas o la caché ({e}); revisá permisos de data/", EXIT_TRIAGE_ERROR)
     except TriageError as e:
         if args.verbose:
             print(json.dumps(e.record, ensure_ascii=False), file=sys.stderr)

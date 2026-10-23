@@ -42,9 +42,13 @@ _DELIMITERS = re.compile(r"</?\s*(ticket|system|sistema|assistant|user)\s*>|\[/?
 _BASE64_TOKEN = re.compile(r"[A-Za-z0-9+/]{24,}={0,2}")
 
 
+def _strip_invisible(text: str) -> str:
+    # Categoría Cf = caracteres de formato invisibles (ancho cero, guion suave, tags, etc.).
+    return "".join(c for c in unicodedata.normalize("NFKC", text) if unicodedata.category(c) != "Cf")
+
+
 def normalize(text: str) -> str:
-    text = unicodedata.normalize("NFKC", text)
-    text = _ZERO_WIDTH.sub("", text)
+    text = _strip_invisible(text)
     text = "".join(c for c in unicodedata.normalize("NFD", text) if unicodedata.category(c) != "Mn")
     return " ".join(text.casefold().split())
 
@@ -70,7 +74,7 @@ def _decoded_base64_chunks(text: str) -> list[str]:
 def check_input(text: str, max_chars: int) -> GuardResult:
     if len(text) > max_chars:
         return GuardResult(False, "too_long", LAYER)
-    if _DELIMITERS.search(text):
+    if _DELIMITERS.search(_strip_invisible(text)):
         return GuardResult(False, "delimiter_attack", LAYER)
     reason = _match_patterns(normalize(text))
     if reason:

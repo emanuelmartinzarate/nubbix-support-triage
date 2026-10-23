@@ -60,3 +60,13 @@ def test_cli_triage_error_exit_1(monkeypatch, settings_tmp, capsys):
 def test_cli_verbose_prints_record_to_stderr(wired, capsys):
     assert cli.main(["--verbose", "factura"]) == 0
     assert '"cost_usd"' in capsys.readouterr().err
+
+
+def test_cli_unwritable_metrics_exit_1_no_traceback(wired, monkeypatch, capsys):
+    def deny(record, path):
+        raise PermissionError(13, "Permission denied", str(path))
+
+    monkeypatch.setattr("triage.service.append_metrics", deny)
+    assert cli.main(["factura"]) == 1
+    err = capsys.readouterr().err
+    assert "métricas" in err and "Traceback" not in err

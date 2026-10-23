@@ -163,8 +163,12 @@ def triage(
     log = dict(request_id=request_id, source=source, provider=name, prompt_version=version)
     guards_on = settings.guardrails_enabled if guardrails is None else guardrails
 
+    degraded_guard = None
     if guards_on:
         verdict = _check_input_layers(query, provider, params, settings, usage)
+        if verdict.allowed and verdict.reason:
+            # Moderación degradada (no respondió o no parseó): no bloquea, pero queda registrada.
+            degraded_guard = {"layer": verdict.layer, "reason": verdict.reason}
         if not verdict.allowed:
             guardrail = {"layer": verdict.layer, "reason": verdict.reason}
             record = _record(**log, usage=usage, status="blocked", guardrail=guardrail)
@@ -211,6 +215,6 @@ def triage(
 
     if not cache_hit:
         cache.set(key, response)
-    record = _record(**log, usage=usage, status="ok", cache_hit=cache_hit)
+    record = _record(**log, usage=usage, status="ok", cache_hit=cache_hit, guardrail=degraded_guard)
     append_metrics(record, settings.metrics_path)
     return TriageOutcome(response=response, status="ok", record=record, canary=canary)

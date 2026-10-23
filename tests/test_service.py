@@ -182,3 +182,16 @@ def test_provider_refusal_returns_blocked_contract(settings_tmp):
     assert out.status == "blocked" and out.response.category == "other"
     assert out.record["guardrail"] == {"layer": "provider_safety", "reason": "refusal"}
     assert last_metric(settings_tmp)["status"] == "blocked"
+
+
+def test_degraded_moderation_is_recorded(settings_tmp):
+    s = dataclasses.replace(settings_tmp, moderation_enabled=True)
+    out = triage("me cobraron doble", s, provider=FakeProvider(["no entiendo", VALID]))
+    assert out.status == "ok"
+    assert out.record["guardrail"] == {"layer": "moderation", "reason": "moderation_unparseable"}
+
+
+def test_moderation_outage_is_recorded(settings_tmp):
+    s = dataclasses.replace(settings_tmp, moderation_enabled=True)
+    out = triage("me cobraron doble", s, provider=FakeProvider([FatalProviderError("400"), VALID]))
+    assert out.status == "ok" and out.record["guardrail"]["reason"] == "moderation_unavailable"
