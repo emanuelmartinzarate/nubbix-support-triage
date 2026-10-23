@@ -16,3 +16,4 @@ triage = ["pricing.yaml"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["."]
