@@ -56,3 +56,12 @@ examples:
 
 def test_list_versions_includes_v1():
     assert "v1" in list_prompt_versions()
+
+
+def test_all_versions_load_and_are_distinct():
+    versions = list_prompt_versions()
+    assert versions == ["v1", "v2", "v3"]
+    prompts = [load_prompt(v) for v in versions]
+    assert len({p.technique for p in prompts}) == 3
+    assert all(len(p.examples) >= 8 for p in prompts[1:])
+    assert "BLOQUEA LA OPERACIÓN" in prompts[2].system

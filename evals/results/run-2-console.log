@@ -1,0 +1,46 @@
+
+== anthropic / v1  (n=40) ==
+accuracy 100% | macro 100% | JSON válido 1er intento 98% | errores 0 | bloqueados 0
+por categoría: billing 100% (10/10), technical 100% (10/10), account 100% (10/10), other 100% (10/10)
+latencia p50 2.57s p95 4.67s | tokens in 34637 out 13398 | costo $0.0102 | cache hits 0
+confianza media: casos claros 0.90 | ambiguos 0.78 | brecha 0.13
+resultado: evals/results/20261023-015508_anthropic_v1.json
+
+== anthropic / v2  (n=40) ==
+accuracy 98% | macro 98% | JSON válido 1er intento 100% | errores 0 | bloqueados 0
+por categoría: billing 100% (10/10), technical 90% (9/10), account 100% (10/10), other 100% (10/10)
+latencia p50 1.56s p95 2.42s | tokens in 88222 out 6498 | costo $0.0121 | cache hits 0
+confianza media: casos claros 0.90 | ambiguos 0.80 | brecha 0.10
+resultado: evals/results/20261023-015527_anthropic_v2.json
+
+== anthropic / v3  (n=40) ==
+accuracy 100% | macro 100% | JSON válido 1er intento 100% | errores 0 | bloqueados 0
+por categoría: billing 100% (10/10), technical 100% (10/10), account 100% (10/10), other 100% (10/10)
+latencia p50 1.65s p95 2.42s | tokens in 118046 out 6193 | costo $0.0149 | cache hits 0
+confianza media: casos claros 0.90 | ambiguos 0.76 | brecha 0.14
+resultado: evals/results/20261023-015545_anthropic_v3.json
+
+== gemini / v1  (n=40) ==
+accuracy 98% | macro 98% | JSON válido 1er intento 100% | errores 0 | bloqueados 0
+por categoría: billing 100% (10/10), technical 100% (10/10), account 100% (10/10), other 90% (9/10)
+latencia p50 3.42s p95 6.88s | tokens in 12565 out 6609 | costo $0.0342 | cache hits 0
+confianza media: casos claros 0.97 | ambiguos 0.94 | brecha 0.03
+resultado: evals/results/20261023-015628_gemini_v1.json
+
+== gemini / v2  (n=40) ==
+accuracy 95% | macro 95% | JSON válido 1er intento 100% | errores 0 | bloqueados 0
+por categoría: billing 100% (10/10), technical 90% (9/10), account 100% (10/10), other 90% (9/10)
+latencia p50 2.97s p95 6.61s | tokens in 45222 out 4101 | costo $0.0493 | cache hits 0
+confianza media: casos claros 0.94 | ambiguos 0.88 | brecha 0.06
+resultado: evals/results/20261023-015703_gemini_v2.json
+
+== gemini / v3  (n=40) ==
+accuracy 100% | macro 100% | JSON válido 1er intento 100% | errores 0 | bloqueados 0
+por categoría: billing 100% (10/10), technical 100% (10/10), account 100% (10/10), other 100% (10/10)
+latencia p50 2.63s p95 3.18s | tokens in 63883 out 4176 | costo $0.0636 | cache hits 0
+confianza media: casos claros 0.95 | ambiguos 0.79 | brecha 0.16
+resultado: evals/results/20261023-015731_gemini_v3.json
+
+comparativa: evals/results/comparison.md
+
+costo total de esta corrida: $0.1842 (tope $2.00)

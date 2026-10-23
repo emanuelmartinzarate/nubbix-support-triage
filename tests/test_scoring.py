@@ -68,3 +68,13 @@ def test_budget_exhausts():
     assert not b.exhausted
     b.add(0.005)
     assert b.exhausted and b.spent == pytest.approx(0.011)
+
+
+def test_confidence_calibration_split_by_ambiguity():
+    clear = _case("a", "billing", "billing")
+    clear.confidence = 0.95
+    amb = _case("b", "billing", "billing")
+    amb.confidence, amb.tags = 0.7, ["multi-topic"]
+    s = summarize([clear, amb])
+    assert s["confidence_clear"] == pytest.approx(0.95) and s["confidence_ambiguous"] == pytest.approx(0.7)
+    assert s["confidence_gap"] == pytest.approx(0.25)

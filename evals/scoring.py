@@ -5,6 +5,8 @@ from collections import defaultdict
 from dataclasses import dataclass, field
 
 CATEGORIES = ("billing", "technical", "account", "other")
+# Casos donde un modelo bien calibrado debería bajar la confianza.
+AMBIGUOUS_TAGS = {"ambiguous", "multi-topic", "short", "gibberish"}
 
 
 @dataclass
@@ -21,6 +23,8 @@ class CaseResult:
     cache_hit: bool
     tags: list[str] = field(default_factory=list)
     error: str | None = None
+    confidence: float | None = None
+    actions: list[str] | None = None
 
     @property
     def correct(self) -> bool:
@@ -50,6 +54,10 @@ class CostBudget:
         return self.spent >= self.max_usd
 
 
+def _mean(values: list[float]) -> float | None:
+    return sum(values) / len(values) if values else None
+
+
 def summarize(results: list[CaseResult]) -> dict:
     n = len(results)
     per_category = {}
@@ -65,6 +73,9 @@ def summarize(results: list[CaseResult]) -> dict:
         confusion[r.expected][predicted] += 1
 
     fresh_ok = [r for r in results if r.status == "ok" and not r.cache_hit]
+    scored = [r for r in results if r.status == "ok" and r.confidence is not None]
+    conf_clear = _mean([r.confidence for r in scored if not AMBIGUOUS_TAGS & set(r.tags)])
+    conf_ambiguous = _mean([r.confidence for r in scored if AMBIGUOUS_TAGS & set(r.tags)])
     latencies = [r.latency_s for r in results if not r.cache_hit and r.status != "blocked"]
     return {
         "n": n,
@@ -86,4 +97,9 @@ def summarize(results: list[CaseResult]) -> dict:
         "output_tokens": sum(r.output_tokens for r in results),
         "cost_usd": round(sum(r.cost_usd for r in results), 8),
         "cache_hits": sum(r.cache_hit for r in results),
+        "confidence_clear": conf_clear,
+        "confidence_ambiguous": conf_ambiguous,
+        "confidence_gap": (
+            conf_clear - conf_ambiguous if conf_clear is not None and conf_ambiguous is not None else None
+        ),
     }

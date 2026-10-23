@@ -56,6 +56,7 @@ def settings_tmp(tmp_path, monkeypatch):
     return dataclasses.replace(
         base,
         anthropic_api_key="test-key",
+        prompt_version="v1",
         metrics_path=tmp_path / "metrics.jsonl",
         cache_dir=tmp_path / "cache",
     )

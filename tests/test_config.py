@@ -30,3 +30,8 @@ def test_invalid_number_raises_config_error(monkeypatch):
     monkeypatch.setenv("MAX_TOKENS", "mucho")
     with pytest.raises(ConfigError):
         load_settings(env_file=None)
+
+
+def test_default_prompt_is_v3_chosen_by_evals(monkeypatch):
+    monkeypatch.delenv("PROMPT_VERSION", raising=False)
+    assert load_settings(env_file=None).prompt_version == "v3"

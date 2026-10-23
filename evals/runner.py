@@ -51,6 +51,7 @@ def run_case(case: dict, settings: Settings, provider, provider_name: str, versi
             **base, predicted=out.response.category, status=out.status, attempts=rec["attempts"],
             latency_s=rec["latency_s"], input_tokens=rec["input_tokens"], output_tokens=rec["output_tokens"],
             cost_usd=rec["cost_usd"], cache_hit=rec["cache_hit"],
+            confidence=out.response.confidence, actions=out.response.actions,
         )
     except TriageError as e:
         rec = e.record
@@ -89,6 +90,9 @@ def format_summary(provider_name: str, version: str, s: dict) -> str:
     def sec(x):
         return "-" if x is None else f"{x:.2f}s"
 
+    def num(x):
+        return "-" if x is None else f"{x:.2f}"
+
     lines = [
         f"\n== {provider_name} / {version}  (n={s['n']}) ==",
         f"accuracy {pct(s['accuracy'])} | macro {pct(s['macro_accuracy'])} | "
@@ -99,6 +103,8 @@ def format_summary(provider_name: str, version: str, s: dict) -> str:
         ),
         f"latencia p50 {sec(s['latency_p50'])} p95 {sec(s['latency_p95'])} | tokens in {s['input_tokens']} out {s['output_tokens']} | "
         f"costo ${s['cost_usd']:.4f} | cache hits {s['cache_hits']}",
+        f"confianza media: casos claros {num(s['confidence_clear'])} | ambiguos {num(s['confidence_ambiguous'])} "
+        f"| brecha {num(s['confidence_gap'])}",
     ]
     return "\n".join(lines)
 
@@ -112,8 +118,8 @@ def comparison_table(rows: list[tuple[str, str, dict]]) -> str:
 
     header = (
         "| Proveedor | Prompt | Accuracy | Macro | billing | technical | account | other "
-        "| JSON 1er intento | p50 (s) | p95 (s) | Costo (USD) |\n"
-        "|---|---|---|---|---|---|---|---|---|---|---|---|"
+        "| JSON 1er intento | Brecha confianza | p50 (s) | p95 (s) | Costo (USD) |\n"
+        "|---|---|---|---|---|---|---|---|---|---|---|---|---|"
     )
     body = []
     for provider_name, version, s in rows:
@@ -121,7 +127,7 @@ def comparison_table(rows: list[tuple[str, str, dict]]) -> str:
         body.append(
             f"| {provider_name} | {version} | {pct(s['accuracy'])} | {pct(s['macro_accuracy'])} | "
             + " | ".join(cats)
-            + f" | {pct(s['json_valid_first_try_rate'])} | {sec(s['latency_p50'])} | {sec(s['latency_p95'])} | {s['cost_usd']:.4f} |"
+            + f" | {pct(s['json_valid_first_try_rate'])} | {sec(s['confidence_gap'])} | {sec(s['latency_p50'])} | {sec(s['latency_p95'])} | {s['cost_usd']:.4f} |"
         )
     return header + "\n" + "\n".join(body) + "\n"
 
