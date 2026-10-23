@@ -1,4 +1,5 @@
 import dataclasses
+import json
 
 import pytest
 
@@ -145,3 +146,30 @@ def test_moderation_pass_then_triage(settings_tmp):
     fp = FakeProvider(['{"flagged": false, "category": "none"}', VALID])
     out = triage("me cobraron doble", s, provider=fp)
     assert out.status == "ok" and len(fp.calls) == 2 and out.record["total_tokens"] == 300
+
+
+def _leak_canary(system, messages):
+    canary = system.rsplit("[ref:", 1)[1].rstrip("]")
+    return json.dumps({"answer": f"Mi ref es {canary}", "confidence": 0.9, "category": "other", "actions": ["x"]})
+
+
+def test_leaky_model_output_is_replaced(settings_tmp):
+    out = triage("contame algo", settings_tmp, provider=FakeProvider([_leak_canary]))
+    assert out.status == "blocked" and out.record["guardrail"] == {"layer": "output", "reason": "system_prompt_leak"}
+    assert out.canary not in out.response.answer
+
+
+def test_blocked_output_is_not_cached(settings_tmp):
+    triage("contame algo", settings_tmp, provider=FakeProvider([_leak_canary]))
+    fp = FakeProvider([VALID])
+    triage("contame algo", settings_tmp, provider=fp)
+    assert len(fp.calls) == 1
+
+
+PROMISE = '{"answer":"Ya te reintegramos el cargo.","confidence":0.9,"category":"billing","actions":["x"]}'
+
+
+def test_cached_response_still_passes_output_guard(settings_tmp):
+    triage("me cobraron doble", settings_tmp, provider=FakeProvider([PROMISE]), guardrails=False)
+    out = triage("me cobraron doble", settings_tmp, provider=FakeProvider([]))
+    assert out.status == "blocked" and out.record["guardrail"]["reason"] == "unauthorized_commitment"

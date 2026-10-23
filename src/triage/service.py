@@ -9,6 +9,7 @@ from triage.config import ConfigError, Settings
 from triage.guardrails import GuardResult
 from triage.guardrails.input_guard import check_input
 from triage.guardrails.moderation import moderate
+from triage.guardrails.output_guard import check_output
 from triage.metrics import append_metrics, new_request_id, utc_now_iso
 from triage.pricing import PricingError, estimate_cost
 from triage.prompts import build_messages, load_prompt, prompt_fingerprint
@@ -172,26 +173,36 @@ def triage(
                 response=blocked_response(verdict.reason), status="blocked", record=record, canary=canary
             )
 
+    system, messages = build_messages(prompt, query, canary)
     cache = ResponseCache(settings.cache_dir, settings.cache_enabled)
     key = cache_key(
         name, model, f"{version}:{prompt_fingerprint(prompt)}", settings.temperature, settings.max_tokens, query
     )
     read_cache = settings.cache_enabled if use_cache is None else use_cache
-    cached = cache.get(key) if read_cache else None
-    if cached is not None:
-        record = _record(**log, usage=usage, status="ok", cache_hit=True)
-        append_metrics(record, settings.metrics_path)
-        return TriageOutcome(response=cached, status="ok", record=record, canary=canary)
+    response = cache.get(key) if read_cache else None
+    cache_hit = response is not None
 
-    system, messages = build_messages(prompt, query, canary)
-    try:
-        response = _call_until_valid(provider, system, messages, params, settings, usage)
-    except (ParseError, ProviderError) as e:
-        record = _record(**log, usage=usage, status="error", error=str(e))
-        append_metrics(record, settings.metrics_path)
-        raise TriageError(str(e), record) from e
+    if not cache_hit:
+        try:
+            response = _call_until_valid(provider, system, messages, params, settings, usage)
+        except (ParseError, ProviderError) as e:
+            record = _record(**log, usage=usage, status="error", error=str(e))
+            append_metrics(record, settings.metrics_path)
+            raise TriageError(str(e), record) from e
 
-    cache.set(key, response)
-    record = _record(**log, usage=usage, status="ok")
+    # La salida se valida siempre, también la cacheada: pudo guardarse con los guardrails apagados.
+    if guards_on:
+        verdict = check_output(response, system, canary)
+        if not verdict.allowed:
+            guardrail = {"layer": verdict.layer, "reason": verdict.reason}
+            record = _record(**log, usage=usage, status="blocked", cache_hit=cache_hit, guardrail=guardrail)
+            append_metrics(record, settings.metrics_path)
+            return TriageOutcome(
+                response=blocked_response(verdict.reason), status="blocked", record=record, canary=canary
+            )
+
+    if not cache_hit:
+        cache.set(key, response)
+    record = _record(**log, usage=usage, status="ok", cache_hit=cache_hit)
     append_metrics(record, settings.metrics_path)
     return TriageOutcome(response=response, status="ok", record=record, canary=canary)
