@@ -6,13 +6,16 @@ from typing import Literal
 
 from triage.cache import ResponseCache, cache_key
 from triage.config import ConfigError, Settings
+from triage.guardrails import GuardResult
+from triage.guardrails.input_guard import check_input
+from triage.guardrails.moderation import moderate
 from triage.metrics import append_metrics, new_request_id, utc_now_iso
 from triage.pricing import PricingError, estimate_cost
 from triage.prompts import build_messages, load_prompt, prompt_fingerprint
 from triage.providers import get_provider, model_for
 from triage.providers.base import LLMParams, LLMProvider, Message, ProviderError
 from triage.providers.retry import call_with_backoff
-from triage.schema import TRIAGE_JSON_SCHEMA, ParseError, TriageResponse, parse_response
+from triage.schema import TRIAGE_JSON_SCHEMA, ParseError, TriageResponse, blocked_response, parse_response
 
 Source = Literal["cli", "api", "eval"]
 
@@ -103,6 +106,25 @@ def _call_until_valid(
     raise ParseError(f"reintentos agotados: {last_error}")
 
 
+def _check_input_layers(
+    query: str, provider: LLMProvider, params: LLMParams, settings: Settings, usage: _Usage
+) -> GuardResult:
+    """Capa 1 (heurística, gratis) y, si está habilitada, capa 2 (moderación LLM)."""
+    verdict = check_input(query, settings.max_query_chars)
+    if not verdict.allowed or not settings.moderation_enabled:
+        return verdict
+    try:
+        verdict, result = call_with_backoff(
+            lambda: moderate(query, provider, params), settings.api_max_retries
+        )
+    except ProviderError:
+        # Fail-open: si la moderación no responde, siguen las capas de prompt y de salida.
+        return GuardResult(True, "moderation_unavailable", "moderation")
+    if result is not None:
+        usage.add(result.input_tokens, result.output_tokens, result.latency_s)
+    return verdict
+
+
 def triage(
     query: str,
     settings: Settings,
@@ -138,6 +160,17 @@ def triage(
         json_schema=TRIAGE_JSON_SCHEMA,
     )
     log = dict(request_id=request_id, source=source, provider=name, prompt_version=version)
+    guards_on = settings.guardrails_enabled if guardrails is None else guardrails
+
+    if guards_on:
+        verdict = _check_input_layers(query, provider, params, settings, usage)
+        if not verdict.allowed:
+            guardrail = {"layer": verdict.layer, "reason": verdict.reason}
+            record = _record(**log, usage=usage, status="blocked", guardrail=guardrail)
+            append_metrics(record, settings.metrics_path)
+            return TriageOutcome(
+                response=blocked_response(verdict.reason), status="blocked", record=record, canary=canary
+            )
 
     cache = ResponseCache(settings.cache_dir, settings.cache_enabled)
     key = cache_key(
