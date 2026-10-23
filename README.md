@@ -362,6 +362,10 @@ fail-open: bloquear a un cliente real porque el filtro falló sería peor que de
 - El dataset es **sintético** (escrito con asistencia de IA, revisado por el autor), no tickets reales.
 - La suite adversarial no logró ningún ataque exitoso: hace falta una suite más agresiva (ataques
   multi-turno, documentos adjuntos) para medir la diferencia entre capas por tasa de éxito.
+- **El borrador puede inventar detalles del producto.** Sin acceso a la documentación real de Nubbix,
+  el modelo a veces describe pasos plausibles pero no verificados (p. ej. "desde el panel de
+  administración, en la sección de usuarios"). Por eso es un borrador para el agente humano, no una
+  respuesta automática al cliente; conectarlo a la base de conocimiento es el caso de uso de RAG (Módulo 2).
 - La calidad de `answer` y `actions` no se evalúa automáticamente (solo la categoría y la calibración);
   un LLM-as-judge sería el siguiente paso.
 - Sin `temperature` en Anthropic, las respuestas no son reproducibles bit a bit.
