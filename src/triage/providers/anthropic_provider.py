@@ -10,6 +10,7 @@ from triage.providers.base import (
     LLMParams,
     LLMResult,
     Message,
+    RefusalError,
     TransientProviderError,
 )
 
@@ -50,7 +51,7 @@ class AnthropicProvider:
         latency = time.perf_counter() - start
 
         if response.stop_reason == "refusal":
-            raise FatalProviderError("anthropic: el modelo rechazó la solicitud (refusal)")
+            raise RefusalError("anthropic: el modelo rechazó la solicitud (refusal)")
         text = "".join(block.text for block in response.content if block.type == "text")
         return LLMResult(
             text=text,

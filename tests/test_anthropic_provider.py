@@ -5,7 +5,7 @@ import httpx2
 import pytest
 
 from triage.providers.anthropic_provider import AnthropicProvider
-from triage.providers.base import FatalProviderError, LLMParams, TransientProviderError
+from triage.providers.base import FatalProviderError, LLMParams, RefusalError, TransientProviderError
 
 PARAMS = LLMParams(model="claude-haiku-5-5", temperature=0.0, max_tokens=600, timeout_s=30.0)
 SCHEMA = {"type": "object", "properties": {"a": {"type": "integer"}}, "required": ["a"]}
@@ -89,7 +89,7 @@ def test_auth_error_maps_to_fatal():
 def test_refusal_is_fatal():
     refused = _ok()
     refused.stop_reason, refused.content = "refusal", []
-    with pytest.raises(FatalProviderError, match="refusal"):
+    with pytest.raises(RefusalError):
         AnthropicProvider("k", client=_client(result=refused)).complete(
             "s", [{"role": "user", "content": "x"}], PARAMS
         )

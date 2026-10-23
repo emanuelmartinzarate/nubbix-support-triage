@@ -16,7 +16,7 @@ def clean_env(monkeypatch):
 
 def test_defaults():
     s = load_settings(env_file=None)
-    assert s.llm_provider == "anthropic" and s.eval_max_cost_usd == 2.0 and s.moderation_enabled is False
+    assert s.llm_provider == "anthropic" and s.eval_max_cost_usd == 2.0 and s.moderation_enabled is True
 
 
 def test_env_overrides(monkeypatch):

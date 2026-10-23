@@ -173,3 +173,12 @@ def test_cached_response_still_passes_output_guard(settings_tmp):
     triage("me cobraron doble", settings_tmp, provider=FakeProvider([PROMISE]), guardrails=False)
     out = triage("me cobraron doble", settings_tmp, provider=FakeProvider([]))
     assert out.status == "blocked" and out.record["guardrail"]["reason"] == "unauthorized_commitment"
+
+
+def test_provider_refusal_returns_blocked_contract(settings_tmp):
+    from triage.providers.base import RefusalError
+
+    out = triage("algo raro", settings_tmp, provider=FakeProvider([RefusalError("anthropic: refusal")]))
+    assert out.status == "blocked" and out.response.category == "other"
+    assert out.record["guardrail"] == {"layer": "provider_safety", "reason": "refusal"}
+    assert last_metric(settings_tmp)["status"] == "blocked"

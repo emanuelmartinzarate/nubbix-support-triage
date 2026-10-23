@@ -45,3 +45,7 @@ class TransientProviderError(ProviderError):
 
 class FatalProviderError(ProviderError):
     """Error no recuperable (auth, request inválido, rechazo): falla rápido."""
+
+
+class RefusalError(FatalProviderError):
+    """El proveedor se negó a responder por sus políticas de seguridad (refusal / safety)."""

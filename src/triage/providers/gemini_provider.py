@@ -12,10 +12,12 @@ from triage.providers.base import (
     LLMParams,
     LLMResult,
     Message,
+    RefusalError,
     TransientProviderError,
 )
 
 _ROLES = {"user": "user", "assistant": "model"}
+_SAFETY_REASONS = {"SAFETY", "PROHIBITED_CONTENT", "BLOCKLIST", "SPII", "RECITATION"}
 
 
 class GeminiProvider:
@@ -58,7 +60,10 @@ class GeminiProvider:
 
         if not response.text:
             reason = response.candidates[0].finish_reason if response.candidates else "sin candidatos"
-            raise FatalProviderError(f"gemini: respuesta vacía o bloqueada por safety ({reason})")
+            reason_name = getattr(reason, "name", str(reason))
+            if reason_name in _SAFETY_REASONS:
+                raise RefusalError(f"gemini: respuesta bloqueada por safety ({reason_name})")
+            raise FatalProviderError(f"gemini: respuesta vacía ({reason_name})")
         usage = response.usage_metadata
         return LLMResult(
             text=response.text,

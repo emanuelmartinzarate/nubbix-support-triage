@@ -3,7 +3,7 @@ from types import SimpleNamespace
 import pytest
 from google.genai import errors
 
-from triage.providers.base import FatalProviderError, LLMParams, TransientProviderError
+from triage.providers.base import FatalProviderError, LLMParams, RefusalError, TransientProviderError
 from triage.providers.gemini_provider import GeminiProvider
 
 PARAMS = LLMParams(model="gemini-3.8-flash", temperature=0.0, max_tokens=600, timeout_s=30.0)
@@ -69,7 +69,7 @@ def test_missing_thoughts_count_is_zero():
 def test_empty_text_is_fatal():
     blocked = _ok(text=None)
     blocked.candidates = [SimpleNamespace(finish_reason="SAFETY")]
-    with pytest.raises(FatalProviderError, match="SAFETY"):
+    with pytest.raises(RefusalError, match="SAFETY"):
         GeminiProvider("k", client=_client(result=blocked)).complete("s", MESSAGES, PARAMS)
 
 
@@ -89,3 +89,11 @@ def test_400_is_fatal():
     err = errors.ClientError(400, {"error": {"code": 400, "message": "bad", "status": "INVALID_ARGUMENT"}})
     with pytest.raises(FatalProviderError):
         GeminiProvider("k", client=_client(error=err)).complete("s", MESSAGES, PARAMS)
+
+
+def test_empty_text_without_safety_is_plain_fatal():
+    empty = _ok(text=None)
+    empty.candidates = [SimpleNamespace(finish_reason="MAX_TOKENS")]
+    with pytest.raises(FatalProviderError) as exc:
+        GeminiProvider("k", client=_client(result=empty)).complete("s", MESSAGES, PARAMS)
+    assert not isinstance(exc.value, RefusalError)

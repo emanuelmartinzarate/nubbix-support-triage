@@ -14,7 +14,7 @@ from triage.metrics import append_metrics, new_request_id, utc_now_iso
 from triage.pricing import PricingError, estimate_cost
 from triage.prompts import build_messages, load_prompt, prompt_fingerprint
 from triage.providers import get_provider, model_for
-from triage.providers.base import LLMParams, LLMProvider, Message, ProviderError
+from triage.providers.base import LLMParams, LLMProvider, Message, ProviderError, RefusalError
 from triage.providers.retry import call_with_backoff
 from triage.schema import TRIAGE_JSON_SCHEMA, ParseError, TriageResponse, blocked_response, parse_response
 
@@ -185,6 +185,14 @@ def triage(
     if not cache_hit:
         try:
             response = _call_until_valid(provider, system, messages, params, settings, usage)
+        except RefusalError:
+            # El rechazo del proveedor es un guardrail más: el consumidor recibe el contrato igual.
+            guardrail = {"layer": "provider_safety", "reason": "refusal"}
+            record = _record(**log, usage=usage, status="blocked", guardrail=guardrail)
+            append_metrics(record, settings.metrics_path)
+            return TriageOutcome(
+                response=blocked_response("refusal"), status="blocked", record=record, canary=canary
+            )
         except (ParseError, ProviderError) as e:
             record = _record(**log, usage=usage, status="error", error=str(e))
             append_metrics(record, settings.metrics_path)
