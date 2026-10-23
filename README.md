@@ -85,7 +85,7 @@ en `data/` y la CLI termina con exit 1 y un mensaje de permisos.
 python3.12 -m venv .venv          # o: uv venv -p 3.12 .venv
 source .venv/bin/activate
 pip install -r requirements.txt   # o: uv pip install -r requirements.txt (incluye el paquete en modo editable)
-pytest -q                         # 167 tests unitarios, sin llamadas reales
+pytest -q                         # 176 tests unitarios, sin llamadas reales
 ```
 
 > Si `python3.12 -m venv` falla con "ensurepip is not available" (Debian/Ubuntu/WSL), instalá
