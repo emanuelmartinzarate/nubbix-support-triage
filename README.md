@@ -169,10 +169,10 @@ Decisiones:
 - **Modelos chicos.** Clasificar 4 categorías y redactar un borrador corto no necesita un modelo
   grande; la comparativa muestra 100% de macro accuracy con ambos. `pricing.yaml` incluye también
   Sonnet 5.5, Gemini Flash-Lite y Pro para cambiar de modelo por `.env`.
-- **Sin `temperature` en Anthropic.** Desde la versión de API `2026-10-21`, Anthropic rechaza
-  `temperature`/`top_p`/`top_k` con un 400 en todos los modelos, y el SDK 2.x ya no los acepta.
-  La estabilidad se busca por otro lado: thinking desactivado, `effort: low`, salida estructurada
-  y un prompt con reglas explícitas. La variabilidad residual se ve en los evals (sección 7).
+- **Sin `temperature` en Anthropic.** La versión de API `2026-10-21` rechaza `temperature`/`top_p`/`top_k`
+  con un 400 en todos los modelos ([guía oficial](https://platform.claude.com/docs/en/api/migration-2026-10-21#sampling-parameters)),
+  y el SDK `anthropic` ≥ 2.0.0 ya no los expone. La estabilidad se busca por otro lado: thinking
+  desactivado, `effort: low`, salida estructurada y un prompt con reglas explícitas.
 - **Thinking mínimo.** El razonamiento interno se factura como tokens de salida y no mejora una
   clasificación simple; Gemini lo reporta aparte (`thoughts_token_count`) y se suma a `output_tokens`
   para que el costo sea real.
@@ -370,7 +370,14 @@ fail-open: bloquear a un cliente real porque el filtro falló sería peor que de
   respuesta automática al cliente; conectarlo a la base de conocimiento es el caso de uso de RAG (Módulo 2).
 - La calidad de `answer` y `actions` no se evalúa automáticamente (solo la categoría y la calibración);
   un LLM-as-judge sería el siguiente paso.
-- Sin `temperature` en Anthropic, las respuestas no son reproducibles bit a bit.
+- **Sin `temperature` en Anthropic, las respuestas no son reproducibles bit a bit.** Desde la versión
+  de API `2026-10-21`, una request que envía `temperature`, `top_p` o `top_k` devuelve un error 400,
+  incluso con el valor por defecto, y ningún otro parámetro reemplaza ese control
+  ([guía oficial de migración](https://platform.claude.com/docs/en/api/migration-2026-10-21#sampling-parameters)).
+  El SDK de Python `anthropic` 2.0.0 es la primera versión que usa esa API, y este proyecto usa la 2.1.0,
+  que ya no acepta esos parámetros. Además, los modelos desde Claude 4.7, incluido Haiku 5.5, solo admitían
+  los valores por defecto. La variabilidad se acota con thinking desactivado, `effort: low`, salida
+  estructurada y las reglas explícitas del prompt v3, y se mide entre corridas en los evals (sección 7).
 - El guardrail de salida detecta fugas literales y compromisos con patrones; una paráfrasis del system
   prompt no la detecta (la cubren la capa 3 y la moderación).
 - Los precios de Gemini 3.8 Flash suben al doble desde 2027-01-01 (anotado en `pricing.yaml`).
