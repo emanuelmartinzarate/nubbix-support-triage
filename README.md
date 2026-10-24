@@ -384,9 +384,23 @@ fail-open: bloquear a un cliente real porque el filtro falló sería peor que de
 
 ## 14. Uso de IA en el desarrollo
 
-El proyecto se desarrolló con **Claude Code** (Claude Opus 5.5) como par de programación: Claude
-escribió el código con TDD y propuso alternativas; las decisiones de producto y de presupuesto
-fueron del autor.
+El proyecto se desarrolló con **Claude Code** (Claude Opus 5.5) como asistente de ingeniería. Claude
+implementó el código con TDD y propuso alternativas técnicas. Las decisiones de producto y de
+presupuesto fueron del autor, y **la arquitectura se definió en conjunto**, por ejemplo al descartar
+Google ADK en favor de una abstracción propia de proveedores y al optar por una única imagen Docker
+con tres modos de ejecución.
+
+El trabajo se organizó en tres etapas, cada una guiada por un prompt con un objetivo explícito:
+
+| Etapa | Prompt (objetivo) | Resultado |
+|---|---|---|
+| Diseño | Relevar requisitos, restricciones y presupuesto a partir de la consigna, y proponer una arquitectura | [Documento de diseño](docs/superpowers/specs/2026-10-22-nubbix-triage-design.md), validado por un revisor independiente |
+| Planificación | Descomponer el diseño en tareas incrementales, cada una con sus tests y su criterio de aceptación | [Plan de implementación](docs/superpowers/plans/2026-10-22-nubbix-triage.md) en 16 tareas |
+| Implementación | Ejecutar el plan tarea por tarea con TDD, registrando cada decisión tomada en el camino y validándola con datos | Código, evals y una revisión final del branch completo |
+
+Las decisiones del autor que condicionaron el sistema fueron la elección de proveedores (Anthropic y
+Gemini), el tope de costo por corrida de evals, la regla de desempate entre categorías y la revisión
+de las etiquetas del dataset.
 
 ## Variables de entorno
 
