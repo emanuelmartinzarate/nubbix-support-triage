@@ -61,7 +61,10 @@ flowchart LR
 Requisitos: Python 3.12 (o Docker), y API keys de Anthropic y/o Gemini.
 
 ```bash
-git clone <este-repo> && cd <este-repo>
+git clone https://github.com/emanuelmartinzarate/nubbix-support-triage.git
+cd nubbix-support-triage
+# alternativa con GitHub CLI: gh repo clone emanuelmartinzarate/nubbix-support-triage
+
 cp .env.example .env          # completar ANTHROPIC_API_KEY y GEMINI_API_KEY
 ```
 
