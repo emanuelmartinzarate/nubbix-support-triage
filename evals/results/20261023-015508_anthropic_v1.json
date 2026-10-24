@@ -1,0 +1,990 @@
+{
+  "config": {
+    "provider": "anthropic",
+    "prompt_version": "v1",
+    "dataset": "dataset.jsonl",
+    "limit": null,
+    "no_cache": true
+  },
+  "summary": {
+    "n": 40,
+    "accuracy": 1.0,
+    "macro_accuracy": 1.0,
+    "per_category": {
+      "billing": {
+        "n": 10,
+        "correct": 10,
+        "accuracy": 1.0
+      },
+      "technical": {
+        "n": 10,
+        "correct": 10,
+        "accuracy": 1.0
+      },
+      "account": {
+        "n": 10,
+        "correct": 10,
+        "accuracy": 1.0
+      },
+      "other": {
+        "n": 10,
+        "correct": 10,
+        "accuracy": 1.0
+      }
+    },
+    "confusion": {
+      "billing": {
+        "billing": 10
+      },
+      "technical": {
+        "technical": 10
+      },
+      "account": {
+        "account": 10
+      },
+      "other": {
+        "other": 10
+      }
+    },
+    "json_valid_first_try_rate": 0.975,
+    "avg_attempts": 1.025,
+    "errors": 0,
+    "blocked": 0,
+    "latency_p50": 2.5741,
+    "latency_p95": 4.6742,
+    "input_tokens": 34637,
+    "output_tokens": 13398,
+    "cost_usd": 0.0101627,
+    "cache_hits": 0,
+    "confidence_clear": 0.9024,
+    "confidence_ambiguous": 0.7766666666666667,
+    "confidence_gap": 0.12573333333333325,
+    "aborted_by_cost_cap": false
+  },
+  "cases": [
+    {
+      "id": "bil-01",
+      "expected": "billing",
+      "predicted": "billing",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 3.0744,
+      "input_tokens": 816,
+      "output_tokens": 338,
+      "cost_usd": 0.0002506,
+      "cache_hit": false,
+      "tags": [],
+      "error": null,
+      "confidence": 0.95,
+      "actions": [
+        "Revisar en el sistema de facturación el detalle del débito de $45.900 y el plan vigente del cliente",
+        "Verificar si hubo un cambio de plan, un ajuste de precio o un cargo adicional y en qué fecha",
+        "Confirmar si se envió notificación previa de aumento al titular de la cuenta",
+        "Si el cobro es incorrecto, gestionar la devolución de la diferencia de $13.900",
+        "Responder al cliente con el detalle del cobro y los pasos a seguir"
+      ]
+    },
+    {
+      "id": "bil-02",
+      "expected": "billing",
+      "predicted": "billing",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 3.6153,
+      "input_tokens": 805,
+      "output_tokens": 388,
+      "cost_usd": 0.0002745,
+      "cache_hit": false,
+      "tags": [
+        "informal"
+      ],
+      "error": null,
+      "confidence": 0.93,
+      "actions": [
+        "Verificar en el sistema de facturación la factura de septiembre emitida como consumidor final y confirmar el cliente asociado",
+        "Solicitar al cliente la CUIT y razón social de la SRL, junto con la condición frente al IVA, si no constan en la cuenta",
+        "Anular o emitir nota de crédito sobre la factura B/C original según corresponda y reemitir factura A a nombre de la SRL",
+        "Confirmar con el cliente que la nueva factura cumple los requisitos de su contador antes de cerrar el ticket",
+        "Revisar si el error se originó por datos incompletos del cliente en el alta de facturación para evitar que se repita"
+      ]
+    },
+    {
+      "id": "bil-03",
+      "expected": "billing",
+      "predicted": "billing",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 3.2351,
+      "input_tokens": 806,
+      "output_tokens": 359,
+      "cost_usd": 0.0002601,
+      "cache_hit": false,
+      "tags": [
+        "ambiguous"
+      ],
+      "error": null,
+      "confidence": 0.92,
+      "actions": [
+        "Verificar en el sistema de facturación el precio actual del plan mensual y del plan anual.",
+        "Calcular el ahorro anual comparado con el costo de 12 meses del plan mensual.",
+        "Calcular el prorrateo del saldo ya pagado en el ciclo actual según la política vigente.",
+        "Enviar al cliente el detalle del ahorro y del crédito antes de aplicar el cambio de plan.",
+        "Confirmar con el cliente antes de procesar el cambio y el nuevo cobro."
+      ]
+    },
+    {
+      "id": "bil-04",
+      "expected": "billing",
+      "predicted": "billing",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 3.2941,
+      "input_tokens": 818,
+      "output_tokens": 345,
+      "cost_usd": 0.0002543,
+      "cache_hit": false,
+      "tags": [
+        "informal",
+        "typos",
+        "ambiguous"
+      ],
+      "error": null,
+      "confidence": 0.95,
+      "actions": [
+        "Verificar en el panel de cobros si el intento de renovación fue rechazado y el motivo del rechazo",
+        "Confirmar que la nueva tarjeta quedó asociada como medio de pago predeterminado de la suscripción",
+        "Reintentar manualmente el cobro pendiente y, si se aprueba, reactivar la suscripción",
+        "Revisar si la suspensión automática no se actualizó tras el pago y forzar la sincronización del estado de la cuenta",
+        "Informar al cliente el resultado y confirmar que el acceso quedó restablecido"
+      ]
+    },
+    {
+      "id": "bil-05",
+      "expected": "billing",
+      "predicted": "billing",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 1.8479,
+      "input_tokens": 764,
+      "output_tokens": 257,
+      "cost_usd": 0.0002049,
+      "cache_hit": false,
+      "tags": [
+        "short",
+        "ambiguous"
+      ],
+      "error": null,
+      "confidence": 0.55,
+      "actions": [
+        "Solicitar al cliente el número de factura o período consultado",
+        "Verificar el correo asociado a la cuenta del cliente",
+        "Revisar el historial de facturación y cobros de la cuenta",
+        "Confirmar si la consulta es por una factura emitida, pendiente o un cargo inesperado"
+      ]
+    },
+    {
+      "id": "bil-06",
+      "expected": "billing",
+      "predicted": "billing",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.517,
+      "input_tokens": 801,
+      "output_tokens": 329,
+      "cost_usd": 0.0002446,
+      "cache_hit": false,
+      "tags": [
+        "lang-en"
+      ],
+      "error": null,
+      "confidence": 0.95,
+      "actions": [
+        "Verificar en el sistema de facturación la moneda con la que se emitió la última factura del cliente",
+        "Confirmar con el cliente la moneda contratada y el tipo de cambio aplicable",
+        "Emitir nota de crédito por el monto cobrado en USD y refacturar en ARS",
+        "Revisar si el cobro en USD fue efectivamente procesado y coordinar el reintegro si corresponde",
+        "Responder al cliente con el número de nota de crédito y la nueva factura"
+      ]
+    },
+    {
+      "id": "bil-07",
+      "expected": "billing",
+      "predicted": "billing",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 1.7502,
+      "input_tokens": 803,
+      "output_tokens": 261,
+      "cost_usd": 0.0002108,
+      "cache_hit": false,
+      "tags": [],
+      "error": null,
+      "confidence": 0.95,
+      "actions": [
+        "Verificar la fecha de cancelación de la suscripción en el sistema",
+        "Confirmar el cobro de octubre y el monto a reintegrar",
+        "Iniciar el proceso de reintegro con el área de pagos",
+        "Responder al cliente con el monto y los plazos estimados"
+      ]
+    },
+    {
+      "id": "bil-08",
+      "expected": "billing",
+      "predicted": "billing",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.5235,
+      "input_tokens": 794,
+      "output_tokens": 295,
+      "cost_usd": 0.0002269,
+      "cache_hit": false,
+      "tags": [
+        "lang-pt"
+      ],
+      "error": null,
+      "confidence": 0.96,
+      "actions": [
+        "Verificar no sistema de pagamentos as duas cobranças do mês e confirmar que são duplicadas",
+        "Solicitar o estorno de uma das transações ao processador de pagamentos",
+        "Informar ao cliente o número de referência do estorno e o prazo estimado de crédito no cartão",
+        "Revisar se a duplicidade foi causada por erro interno para abrir incidente, se aplicável"
+      ]
+    },
+    {
+      "id": "bil-09",
+      "expected": "billing",
+      "predicted": "billing",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.7341,
+      "input_tokens": 827,
+      "output_tokens": 324,
+      "cost_usd": 0.0002447,
+      "cache_hit": false,
+      "tags": [
+        "benign-trigger"
+      ],
+      "error": null,
+      "confidence": 0.93,
+      "actions": [
+        "Verificar en el sistema de facturación el estado de la deuda y la factura asociada al cliente",
+        "Generar un nuevo enlace o link de pago válido para reemplazar el vencido",
+        "Consultar qué medios de pago alternativos están habilitados para el cliente (transferencia, otros)",
+        "Enviar al cliente las opciones de pago disponibles y confirmar cuál prefiere",
+        "Registrar el caso y verificar que el enlace anterior quede invalidado"
+      ]
+    },
+    {
+      "id": "bil-10",
+      "expected": "billing",
+      "predicted": "billing",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.7437,
+      "input_tokens": 820,
+      "output_tokens": 386,
+      "cost_usd": 0.000275,
+      "cache_hit": false,
+      "tags": [],
+      "error": null,
+      "confidence": 0.93,
+      "actions": [
+        "Verificar en el sistema de facturación si existe un add-on 'Stock' asociado a la cuenta del cliente y su fecha de alta",
+        "Revisar el historial de cambios de plan y quién realizó la contratación (usuario administrador)",
+        "Confirmar con el cliente el monto, la fecha exacta del cargo y los últimos dígitos de la tarjeta",
+        "Si el cargo no fue autorizado, iniciar el proceso de reintegro y dar de baja el add-on",
+        "Revisar si hubo un error de facturación o un posible uso no autorizado de la cuenta y, de ser así, escalar a seguridad"
+      ]
+    },
+    {
+      "id": "tec-01",
+      "expected": "technical",
+      "predicted": "technical",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.4593,
+      "input_tokens": 813,
+      "output_tokens": 328,
+      "cost_usd": 0.0002453,
+      "cache_hit": false,
+      "tags": [],
+      "error": null,
+      "confidence": 0.92,
+      "actions": [
+        "Reproducir el error creando una factura de prueba con un producto con stock controlado",
+        "Revisar los logs de la actualización de ayer relacionados con el descuento de stock al facturar",
+        "Verificar si otros clientes reportaron el mismo problema tras el despliegue",
+        "Solicitar al cliente un ejemplo de factura afectada y el SKU de los productos involucrados",
+        "Evaluar si corresponde un ajuste manual de inventario mientras se corrige el error"
+      ]
+    },
+    {
+      "id": "tec-02",
+      "expected": "technical",
+      "predicted": "technical",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.1645,
+      "input_tokens": 799,
+      "output_tokens": 323,
+      "cost_usd": 0.0002414,
+      "cache_hit": false,
+      "tags": [
+        "informal",
+        "typos"
+      ],
+      "error": null,
+      "confidence": 0.9,
+      "actions": [
+        "Verificar si hay incidentes o bugs conocidos en la sección Ventas de la app móvil",
+        "Solicitar al cliente modelo de celular, sistema operativo y versión de la app",
+        "Pedir captura o video del momento del cierre y, si es posible, el log del dispositivo",
+        "Reproducir el problema en un dispositivo de prueba con la misma versión de la app",
+        "Escalar a desarrollo móvil si se confirma el error y avisar al cliente del plazo estimado"
+      ]
+    },
+    {
+      "id": "tec-03",
+      "expected": "technical",
+      "predicted": "technical",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.7168,
+      "input_tokens": 804,
+      "output_tokens": 321,
+      "cost_usd": 0.0002409,
+      "cache_hit": false,
+      "tags": [
+        "multi-topic"
+      ],
+      "error": null,
+      "confidence": 0.6,
+      "actions": [
+        "Verificar el estado de la integración con Mercado Pago desde el lunes y revisar logs de errores",
+        "Confirmar con el cliente la fecha y hora exactas en que empezó la falla",
+        "Revisar en Mercado Pago y en el sistema de facturación los dos cobros de la suscripción de octubre",
+        "Iniciar el reintegro del cobro duplicado si se confirma",
+        "Informar al cliente sobre el avance de ambos casos en un plazo acordado"
+      ]
+    },
+    {
+      "id": "tec-04",
+      "expected": "technical",
+      "predicted": "technical",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.5741,
+      "input_tokens": 815,
+      "output_tokens": 338,
+      "cost_usd": 0.0002505,
+      "cache_hit": false,
+      "tags": [
+        "benign-trigger"
+      ],
+      "error": null,
+      "confidence": 0.85,
+      "actions": [
+        "Solicitar al cliente el archivo CSV o una muestra de las primeras filas sin datos sensibles",
+        "Verificar la codificación (UTF-8) y el separador de campos del archivo",
+        "Revisar que las cabeceras de la fila 1 coincidan con las columnas esperadas por el importador",
+        "Reproducir la importación en el entorno de pruebas con el mismo archivo",
+        "Si es un bug del importador, escalar al equipo de desarrollo con los detalles del error"
+      ]
+    },
+    {
+      "id": "tec-05",
+      "expected": "technical",
+      "predicted": "technical",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 3.1237,
+      "input_tokens": 817,
+      "output_tokens": 380,
+      "cost_usd": 0.0002717,
+      "cache_hit": false,
+      "tags": [
+        "ambiguous"
+      ],
+      "error": null,
+      "confidence": 0.9,
+      "actions": [
+        "Verificar en el panel si hay incidentes activos con la integración de AFIP/facturación electrónica",
+        "Revisar los logs de facturación de hoy para el CUIT del cliente y confirmar el alcance del error 10016",
+        "Confirmar que los datos del certificado digital y el punto de venta del cliente estén vigentes y correctamente configurados",
+        "Solicitar al cliente el CUIT afectado y una captura completa del error",
+        "Escalar a ingeniería si el problema se confirma como general y no específico de la configuración del cliente"
+      ]
+    },
+    {
+      "id": "tec-06",
+      "expected": "technical",
+      "predicted": "technical",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.2598,
+      "input_tokens": 801,
+      "output_tokens": 354,
+      "cost_usd": 0.0002571,
+      "cache_hit": false,
+      "tags": [
+        "lang-en"
+      ],
+      "error": null,
+      "confidence": 0.9,
+      "actions": [
+        "Verificar el estado de la conexión con Shopify en el panel de integraciones de la cuenta del cliente",
+        "Revisar los logs de sincronización de los últimos 2 días por errores de autenticación, token vencido o límites de la API de Shopify",
+        "Confirmar si el token de acceso de la tienda fue revocado o expiró y solicitar reconexión si es necesario",
+        "Forzar una resincronización manual de pedidos desde la fecha de la última sincronización exitosa",
+        "Informar al cliente sobre la causa y el plazo estimado de resolución"
+      ]
+    },
+    {
+      "id": "tec-07",
+      "expected": "technical",
+      "predicted": "technical",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 3.1102,
+      "input_tokens": 794,
+      "output_tokens": 367,
+      "cost_usd": 0.0002629,
+      "cache_hit": false,
+      "tags": [
+        "lang-pt"
+      ],
+      "error": null,
+      "confidence": 0.85,
+      "actions": [
+        "Reproduzir el problema del reporte de flujo de caja con la cuenta del cliente y verificar si hay duplicación en los datos origen o solo en la visualización",
+        "Revisar logs y cambios de despliegue o migraciones realizados desde ayer",
+        "Solicitar al cliente el período filtrado, ejemplo de movimiento duplicado y capturas de pantalla",
+        "Verificar si existen integraciones o importaciones recientes que puedan haber generado registros repetidos",
+        "Informar al cliente sobre el estado de la investigación en un plazo acordado"
+      ]
+    },
+    {
+      "id": "tec-08",
+      "expected": "technical",
+      "predicted": "technical",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.9808,
+      "input_tokens": 798,
+      "output_tokens": 368,
+      "cost_usd": 0.0002638,
+      "cache_hit": false,
+      "tags": [
+        "multi-topic"
+      ],
+      "error": null,
+      "confidence": 0.85,
+      "actions": [
+        "Reproducir el error 500 al enviar invitaciones desde la cuenta del cliente y revisar los logs del servicio de invitaciones",
+        "Verificar si el correo del contador ya existe en otra cuenta o tiene restricciones de dominio",
+        "Consultar si hay incidentes abiertos o cambios recientes en el módulo de usuarios",
+        "Solicitar al cliente la hora aproximada del error y el correo invitado",
+        "Si el problema persiste, escalar a ingeniería con el identificador de la solicitud y el stack trace"
+      ]
+    },
+    {
+      "id": "tec-09",
+      "expected": "technical",
+      "predicted": "technical",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.2806,
+      "input_tokens": 795,
+      "output_tokens": 315,
+      "cost_usd": 0.000237,
+      "cache_hit": false,
+      "tags": [
+        "informal"
+      ],
+      "error": null,
+      "confidence": 0.85,
+      "actions": [
+        "Verificar si hay incidentes o degradación de rendimiento reportados en el servicio de Nubbix",
+        "Pedir al cliente navegador, sistema operativo, conexión y capturas o tiempos por pantalla",
+        "Revisar logs de rendimiento y tiempos de respuesta de la cuenta del cliente",
+        "Consultar si el problema es generalizado o limitado a su instancia o región",
+        "Escalar a ingeniería si no se identifica una causa en la revisión inicial"
+      ]
+    },
+    {
+      "id": "tec-10",
+      "expected": "technical",
+      "predicted": "technical",
+      "status": "ok",
+      "attempts": 2,
+      "latency_s": 6.9404,
+      "input_tokens": 3442,
+      "output_tokens": 1140,
+      "cost_usd": 0.0009142,
+      "cache_hit": false,
+      "tags": [
+        "long",
+        "multi-topic"
+      ],
+      "error": null,
+      "confidence": 0.85,
+      "actions": [
+        "Verificar en la caja 2 la configuración del dispositivo de impresión dentro de Nubbix y comparar con la caja 1",
+        "Revisar si la actualización de Windows cambió el nombre, el puerto o el identificador de la impresora y reasociarla en Nubbix",
+        "Confirmar la versión exacta del conector instalado en la caja 2 y revisar incidentes conocidos con actualizaciones recientes de Windows",
+        "Vaciar o reiniciar la cola de comprobantes pendientes en la caja 2 para evitar reenvíos inconsistentes",
+        "Revisar en la caja 2 la sincronización del cierre de caja y los medios de pago, para determinar si comparte causa con el fallo de impresión"
+      ]
+    },
+    {
+      "id": "acc-01",
+      "expected": "account",
+      "predicted": "account",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.4136,
+      "input_tokens": 806,
+      "output_tokens": 296,
+      "cost_usd": 0.0002286,
+      "cache_hit": false,
+      "tags": [],
+      "error": null,
+      "confidence": 0.92,
+      "actions": [
+        "Verificar el plan contratado y si permite crear usuarios adicionales",
+        "Guiar al cliente en la creación del usuario desde el panel de administración",
+        "Confirmar qué roles o permisos existen para restringir el acceso a reportes",
+        "Ofrecer una videollamada o guía paso a paso si el cliente lo requiere"
+      ]
+    },
+    {
+      "id": "acc-02",
+      "expected": "account",
+      "predicted": "account",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.481,
+      "input_tokens": 794,
+      "output_tokens": 359,
+      "cost_usd": 0.0002589,
+      "cache_hit": false,
+      "tags": [
+        "ambiguous"
+      ],
+      "error": null,
+      "confidence": 0.93,
+      "actions": [
+        "Verificar en el panel que la dirección de email registrada para la cuenta sea correcta",
+        "Revisar en los logs de envío si el correo de recuperación fue generado y entregado o rechazado",
+        "Reenviar manualmente el enlace de restablecimiento de contraseña tras validar la identidad del titular",
+        "Confirmar si el dominio de correo del cliente bloquea mensajes de Nubbix y, de ser así, indicarle que agregue el remitente a su lista segura",
+        "Si el problema persiste, escalar a técnico para revisar la configuración del servicio de correo transaccional"
+      ]
+    },
+    {
+      "id": "acc-03",
+      "expected": "account",
+      "predicted": "account",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 3.2156,
+      "input_tokens": 809,
+      "output_tokens": 451,
+      "cost_usd": 0.0003064,
+      "cache_hit": false,
+      "tags": [],
+      "error": null,
+      "confidence": 0.92,
+      "actions": [
+        "Solicitar al cliente documentación que acredite la titularidad de la empresa (constancia de CUIT, estatuto o similar)",
+        "Verificar que el correo del dueño coincida con el registrado en la empresa o con el dominio corporativo",
+        "Iniciar el procedimiento interno de cambio de administrador principal de la cuenta una vez validada la identidad",
+        "Revisar el registro de auditoría para confirmar quién fue el administrador anterior y desactivar sus accesos",
+        "Confirmar al cliente por escrito el cambio realizado y recomendar activar la autenticación de dos factores"
+      ]
+    },
+    {
+      "id": "acc-04",
+      "expected": "account",
+      "predicted": "account",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 7.1571,
+      "input_tokens": 793,
+      "output_tokens": 307,
+      "cost_usd": 0.0002328,
+      "cache_hit": false,
+      "tags": [
+        "informal"
+      ],
+      "error": null,
+      "confidence": 0.9,
+      "actions": [
+        "Verificar la identidad del solicitante y su rol de administrador en la cuenta",
+        "Solicitar el CUIT correcto y documentación de respaldo (constancia de inscripción AFIP/ARCA)",
+        "Confirmar si el cambio afecta facturas o comprobantes ya emitidos",
+        "Actualizar el CUIT en los datos de la empresa una vez validado",
+        "Informar al cliente la confirmación del cambio y cualquier efecto sobre facturación"
+      ]
+    },
+    {
+      "id": "acc-05",
+      "expected": "account",
+      "predicted": "account",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.2028,
+      "input_tokens": 822,
+      "output_tokens": 299,
+      "cost_usd": 0.0002317,
+      "cache_hit": false,
+      "tags": [],
+      "error": null,
+      "confidence": 0.95,
+      "actions": [
+        "Cerrar todas las sesiones activas de la cuenta del cliente",
+        "Forzar el cambio de contraseña del usuario afectado",
+        "Guiar al cliente para activar la verificación en dos pasos",
+        "Revisar el registro de accesos para confirmar la actividad desde Brasil",
+        "Verificar si hay otros usuarios o cambios de permisos no autorizados en la cuenta"
+      ]
+    },
+    {
+      "id": "acc-06",
+      "expected": "account",
+      "predicted": "account",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.1089,
+      "input_tokens": 801,
+      "output_tokens": 332,
+      "cost_usd": 0.0002461,
+      "cache_hit": false,
+      "tags": [],
+      "error": null,
+      "confidence": 0.85,
+      "actions": [
+        "Verificar que el solicitante sea administrador de la cuenta o tenga autorización para modificar usuarios",
+        "Solicitar el nombre de usuario o correo electrónico del empleado a dar de baja",
+        "Desactivar o eliminar el usuario desde el panel de administración de accesos",
+        "Revocar sesiones activas y tokens asociados a ese usuario",
+        "Confirmar al cliente cuando el acceso haya sido bloqueado"
+      ]
+    },
+    {
+      "id": "acc-07",
+      "expected": "account",
+      "predicted": "account",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.2111,
+      "input_tokens": 811,
+      "output_tokens": 292,
+      "cost_usd": 0.0002271,
+      "cache_hit": false,
+      "tags": [
+        "multi-topic"
+      ],
+      "error": null,
+      "confidence": 0.8,
+      "actions": [
+        "Verificar la identidad del titular de la cuenta antes de desbloquear",
+        "Desbloquear la cuenta o enviar el procedimiento de recuperación de contraseña",
+        "Confirmar la fecha de vencimiento del pago y el plan contratado",
+        "Enviar la factura del período al cliente por correo si el acceso se demora",
+        "Priorizar el ticket por vencimiento de pago en el día"
+      ]
+    },
+    {
+      "id": "acc-08",
+      "expected": "account",
+      "predicted": "account",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.0931,
+      "input_tokens": 765,
+      "output_tokens": 291,
+      "cost_usd": 0.000222,
+      "cache_hit": false,
+      "tags": [
+        "short",
+        "ambiguous"
+      ],
+      "error": null,
+      "confidence": 0.6,
+      "actions": [
+        "Confirmar con el cliente el mensaje de error exacto y el correo de la cuenta",
+        "Verificar en el panel de administración que la cuenta esté activa y no bloqueada",
+        "Revisar intentos fallidos de login recientes en los registros de autenticación",
+        "Si corresponde, enviar el enlace de restablecimiento de contraseña",
+        "Escalar a técnico si el problema persiste tras verificar la cuenta"
+      ]
+    },
+    {
+      "id": "acc-09",
+      "expected": "account",
+      "predicted": "account",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.7801,
+      "input_tokens": 798,
+      "output_tokens": 354,
+      "cost_usd": 0.0002568,
+      "cache_hit": false,
+      "tags": [
+        "ambiguous"
+      ],
+      "error": null,
+      "confidence": 0.8,
+      "actions": [
+        "Verificar los datos de ambas cuentas y los administradores asociados a cada una",
+        "Confirmar con el cliente cuál cuenta se mantendrá como principal",
+        "Evaluar si Nubbix admite la fusión de cuentas o si corresponde migrar los locales manualmente",
+        "Revisar el plan contratado en cada cuenta para asegurar que la cuenta unificada cubra la cantidad de locales",
+        "Coordinar con el área de facturación para ajustar la suscripción si es necesario"
+      ]
+    },
+    {
+      "id": "acc-10",
+      "expected": "account",
+      "predicted": "account",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.3,
+      "input_tokens": 811,
+      "output_tokens": 328,
+      "cost_usd": 0.0002451,
+      "cache_hit": false,
+      "tags": [
+        "benign-trigger"
+      ],
+      "error": null,
+      "confidence": 0.9,
+      "actions": [
+        "Verificar la identidad del titular de la cuenta antes de modificar cualquier configuración de seguridad",
+        "Revisar en el panel de administración si el doble factor está configurado a nivel cuenta o por usuario",
+        "Confirmar con la política de seguridad vigente si es posible desactivar el 2FA para un usuario puntual",
+        "Si se permite, desactivarlo y dejar registro del cambio y del motivo, o sugerir alternativas como recordar dispositivo de confianza",
+        "Responder al cliente con el resultado y las recomendaciones de seguridad correspondientes"
+      ]
+    },
+    {
+      "id": "oth-01",
+      "expected": "other",
+      "predicted": "other",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 4.6742,
+      "input_tokens": 784,
+      "output_tokens": 252,
+      "cost_usd": 0.0002044,
+      "cache_hit": false,
+      "tags": [],
+      "error": null,
+      "confidence": 0.9,
+      "actions": [
+        "Verificar con el equipo comercial si existe algún programa o descuento vigente para ONGs o fundaciones",
+        "Solicitar al cliente el nombre de la organización y cantidad estimada de usuarios",
+        "Derivar la consulta al área de ventas si el cliente quiere una propuesta formal"
+      ]
+    },
+    {
+      "id": "oth-02",
+      "expected": "other",
+      "predicted": "other",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.5466,
+      "input_tokens": 796,
+      "output_tokens": 266,
+      "cost_usd": 0.0002126,
+      "cache_hit": false,
+      "tags": [
+        "informal",
+        "typos"
+      ],
+      "error": null,
+      "confidence": 0.85,
+      "actions": [
+        "Consultar con el equipo comercial si existe algún partner o contador certificado en Rosario",
+        "Responder al cliente confirmando si hay recomendaciones disponibles",
+        "Si no hay partners en Rosario, ofrecer al cliente la documentación o tutoriales de Nubbix para que su contador pueda empezar a usar la plataforma"
+      ]
+    },
+    {
+      "id": "oth-03",
+      "expected": "other",
+      "predicted": "other",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.3381,
+      "input_tokens": 793,
+      "output_tokens": 317,
+      "cost_usd": 0.0002378,
+      "cache_hit": false,
+      "tags": [],
+      "error": null,
+      "confidence": 0.9,
+      "actions": [
+        "Responder la consulta comercial sobre compatibilidad con restaurantes con delivery propio",
+        "Confirmar qué módulos necesita el cliente (pedidos, stock, facturación)",
+        "Derivar al equipo comercial si el cliente quiere contratar o recibir una demo",
+        "Verificar en la documentación de planes si existe algún módulo específico para gastronomía"
+      ]
+    },
+    {
+      "id": "oth-04",
+      "expected": "other",
+      "predicted": "other",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 3.2121,
+      "input_tokens": 773,
+      "output_tokens": 192,
+      "cost_usd": 0.0001733,
+      "cache_hit": false,
+      "tags": [
+        "gibberish"
+      ],
+      "error": null,
+      "confidence": 0.2,
+      "actions": [
+        "Responder al cliente pidiendo que describa su consulta con más detalle",
+        "Verificar si el mensaje fue enviado por error o es una prueba del formulario",
+        "Revisar si el cliente tiene tickets abiertos previos para contextualizar"
+      ]
+    },
+    {
+      "id": "oth-05",
+      "expected": "other",
+      "predicted": "other",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.1759,
+      "input_tokens": 778,
+      "output_tokens": 215,
+      "cost_usd": 0.0001853,
+      "cache_hit": false,
+      "tags": [
+        "gibberish"
+      ],
+      "error": null,
+      "confidence": 0.95,
+      "actions": [
+        "Responder amablemente indicando que el canal es para consultas sobre Nubbix",
+        "Invitar al cliente a describir su consulta sobre la plataforma",
+        "Cerrar el ticket si no hay una consulta relacionada con el producto"
+      ]
+    },
+    {
+      "id": "oth-06",
+      "expected": "other",
+      "predicted": "other",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.798,
+      "input_tokens": 775,
+      "output_tokens": 279,
+      "cost_usd": 0.000217,
+      "cache_hit": false,
+      "tags": [
+        "lang-en"
+      ],
+      "error": null,
+      "confidence": 0.8,
+      "actions": [
+        "Confirmar con el equipo de producto la disponibilidad y la URL vigente de la API pública y su documentación",
+        "Enviar al cliente el enlace a la documentación para desarrolladores",
+        "Consultar si el cliente necesita credenciales o un entorno de pruebas (sandbox)",
+        "Preguntar al cliente qué caso de uso tiene para derivarlo al equipo correspondiente si hace falta"
+      ]
+    },
+    {
+      "id": "oth-07",
+      "expected": "other",
+      "predicted": "other",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.5925,
+      "input_tokens": 804,
+      "output_tokens": 286,
+      "cost_usd": 0.0002234,
+      "cache_hit": false,
+      "tags": [
+        "ambiguous"
+      ],
+      "error": null,
+      "confidence": 0.85,
+      "actions": [
+        "Registrar la sugerencia de funcionalidad (recordatorios de pago por WhatsApp) en el backlog de producto",
+        "Verificar si ya existe un pedido similar o una integración de WhatsApp en curso para vincular el ticket",
+        "Agradecer al cliente y, si corresponde, consultarle detalles de uso para documentar mejor el requerimiento"
+      ]
+    },
+    {
+      "id": "oth-08",
+      "expected": "other",
+      "predicted": "other",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.3008,
+      "input_tokens": 813,
+      "output_tokens": 328,
+      "cost_usd": 0.0002453,
+      "cache_hit": false,
+      "tags": [
+        "ambiguous",
+        "multi-topic"
+      ],
+      "error": null,
+      "confidence": 0.9,
+      "actions": [
+        "Derivar el ticket al equipo comercial para cotización de migración",
+        "Consultar el volumen de datos y tipos de información a migrar en Tango",
+        "Verificar si existe un servicio de migración asistida o herramienta de importación disponible",
+        "Enviar al cliente la lista de precios vigente de planes y de servicio de migración",
+        "Hacer seguimiento si el cliente no responde en 48 horas"
+      ]
+    },
+    {
+      "id": "oth-09",
+      "expected": "other",
+      "predicted": "other",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 3.2395,
+      "input_tokens": 786,
+      "output_tokens": 240,
+      "cost_usd": 0.0001986,
+      "cache_hit": false,
+      "tags": [],
+      "error": null,
+      "confidence": 0.9,
+      "actions": [
+        "Verificar en la web o en la documentación interna el horario vigente de soporte telefónico de los sábados",
+        "Enviar al cliente el horario confirmado por el canal oficial",
+        "Si el horario no está disponible internamente, consultarlo con el área responsable antes de responder"
+      ]
+    },
+    {
+      "id": "oth-10",
+      "expected": "other",
+      "predicted": "other",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.7846,
+      "input_tokens": 793,
+      "output_tokens": 198,
+      "cost_usd": 0.0001783,
+      "cache_hit": false,
+      "tags": [],
+      "error": null,
+      "confidence": 0.9,
+      "actions": [
+        "Agradecer al cliente por el comentario positivo",
+        "Registrar el feedback sobre la pantalla de inicio en el equipo de producto",
+        "No requiere acción técnica ni de facturación"
+      ]
+    }
+  ]
+}

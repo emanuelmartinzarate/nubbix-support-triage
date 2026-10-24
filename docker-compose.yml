@@ -1,0 +1,29 @@
+# Una sola imagen, tres modos de uso:
+#   docker compose up api                                 -> API en http://localhost:8000
+#   docker compose run --rm cli "me cobraron doble"       -> CLI
+#   docker compose run --rm evals --all                   -> suite de evals
+x-triage: &triage
+  build: .
+  image: nubbix-triage:latest
+  env_file: .env
+  # Mismo UID/GID que el host para que data/ y evals/results/ queden con tu usuario.
+  user: "${UID:-1000}:${GID:-1000}"
+  volumes:
+    - ./data:/app/data
+    - ./evals/results:/app/evals/results
+
+services:
+  api:
+    <<: *triage
+    ports:
+      - "8000:8000"
+
+  cli:
+    <<: *triage
+    entrypoint: ["python", "src/main.py"]
+    profiles: ["tools"]
+
+  evals:
+    <<: *triage
+    entrypoint: ["python", "evals/runner.py"]
+    profiles: ["tools"]

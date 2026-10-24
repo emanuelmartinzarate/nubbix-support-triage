@@ -1,0 +1,905 @@
+{
+  "config": {
+    "provider": "gemini",
+    "prompt_version": "v3",
+    "dataset": "dataset.jsonl",
+    "limit": null,
+    "no_cache": true
+  },
+  "summary": {
+    "n": 40,
+    "accuracy": 1.0,
+    "macro_accuracy": 1.0,
+    "per_category": {
+      "billing": {
+        "n": 10,
+        "correct": 10,
+        "accuracy": 1.0
+      },
+      "technical": {
+        "n": 10,
+        "correct": 10,
+        "accuracy": 1.0
+      },
+      "account": {
+        "n": 10,
+        "correct": 10,
+        "accuracy": 1.0
+      },
+      "other": {
+        "n": 10,
+        "correct": 10,
+        "accuracy": 1.0
+      }
+    },
+    "confusion": {
+      "billing": {
+        "billing": 10
+      },
+      "technical": {
+        "technical": 10
+      },
+      "account": {
+        "account": 10
+      },
+      "other": {
+        "other": 10
+      }
+    },
+    "json_valid_first_try_rate": 1.0,
+    "avg_attempts": 1.0,
+    "errors": 0,
+    "blocked": 0,
+    "latency_p50": 2.6328,
+    "latency_p95": 3.1776,
+    "input_tokens": 63883,
+    "output_tokens": 4176,
+    "cost_usd": 0.06357225,
+    "cache_hits": 0,
+    "confidence_clear": 0.9451999999999999,
+    "confidence_ambiguous": 0.7866666666666667,
+    "confidence_gap": 0.1585333333333332,
+    "aborted_by_cost_cap": false
+  },
+  "cases": [
+    {
+      "id": "bil-01",
+      "expected": "billing",
+      "predicted": "billing",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 3.9415,
+      "input_tokens": 1604,
+      "output_tokens": 102,
+      "cost_usd": 0.0015855,
+      "cache_hit": false,
+      "tags": [],
+      "error": null,
+      "confidence": 0.95,
+      "actions": [
+        "Revisar el historial de facturación y débitos recientes de la cuenta",
+        "Verificar si hubo cambios de tarifas, módulos adicionales o ajuste impositivo",
+        "Responder al cliente con la explicación detallada del monto cobrado"
+      ]
+    },
+    {
+      "id": "bil-02",
+      "expected": "billing",
+      "predicted": "billing",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 3.3113,
+      "input_tokens": 1592,
+      "output_tokens": 93,
+      "cost_usd": 0.00154275,
+      "cache_hit": false,
+      "tags": [
+        "informal"
+      ],
+      "error": null,
+      "confidence": 0.95,
+      "actions": [
+        "Verificar los datos fiscales y la condición de IVA de la SRL",
+        "Anular o emitir nota de crédito por la factura de consumidor final",
+        "Emitir la factura A correspondiente a septiembre"
+      ]
+    },
+    {
+      "id": "bil-03",
+      "expected": "billing",
+      "predicted": "billing",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.9193,
+      "input_tokens": 1592,
+      "output_tokens": 102,
+      "cost_usd": 0.0015765,
+      "cache_hit": false,
+      "tags": [
+        "ambiguous"
+      ],
+      "error": null,
+      "confidence": 0.95,
+      "actions": [
+        "Calcular el descuento y ahorro correspondiente al cambio al plan anual",
+        "Verificar los días restantes del ciclo mensual actual para el prorrateo",
+        "Enviar la propuesta y los pasos para confirmar la actualización"
+      ]
+    },
+    {
+      "id": "bil-04",
+      "expected": "billing",
+      "predicted": "billing",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.7388,
+      "input_tokens": 1595,
+      "output_tokens": 98,
+      "cost_usd": 0.00156375,
+      "cache_hit": false,
+      "tags": [
+        "informal",
+        "typos",
+        "ambiguous"
+      ],
+      "error": null,
+      "confidence": 0.92,
+      "actions": [
+        "Verificar la nueva tarjeta cargada en la pasarela de pagos",
+        "Reintentar el cobro pendiente de la suscripción",
+        "Reactivar la cuenta una vez confirmado el pago"
+      ]
+    },
+    {
+      "id": "bil-05",
+      "expected": "billing",
+      "predicted": "billing",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.9656,
+      "input_tokens": 1571,
+      "output_tokens": 159,
+      "cost_usd": 0.0017745,
+      "cache_hit": false,
+      "tags": [
+        "short",
+        "ambiguous"
+      ],
+      "error": null,
+      "confidence": 0.55,
+      "actions": [
+        "Solicitar al cliente más información sobre la consulta de su factura"
+      ]
+    },
+    {
+      "id": "bil-06",
+      "expected": "billing",
+      "predicted": "billing",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.336,
+      "input_tokens": 1593,
+      "output_tokens": 94,
+      "cost_usd": 0.00154725,
+      "cache_hit": false,
+      "tags": [
+        "lang-en"
+      ],
+      "error": null,
+      "confidence": 0.95,
+      "actions": [
+        "Check the currency configuration and latest invoice for the account",
+        "Verify the charge with the billing gateway",
+        "Issue a credit note and updated invoice if the error is confirmed"
+      ]
+    },
+    {
+      "id": "bil-07",
+      "expected": "billing",
+      "predicted": "billing",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.5591,
+      "input_tokens": 1592,
+      "output_tokens": 102,
+      "cost_usd": 0.0015765,
+      "cache_hit": false,
+      "tags": [],
+      "error": null,
+      "confidence": 0.95,
+      "actions": [
+        "Verificar la fecha de la solicitud de cancelación en el sistema",
+        "Revisar la factura y el cobro emitidos en octubre",
+        "Evaluar si corresponde gestionar el reintegro según las políticas del servicio"
+      ]
+    },
+    {
+      "id": "bil-08",
+      "expected": "billing",
+      "predicted": "billing",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.1827,
+      "input_tokens": 1588,
+      "output_tokens": 89,
+      "cost_usd": 0.00152475,
+      "cache_hit": false,
+      "tags": [
+        "lang-pt"
+      ],
+      "error": null,
+      "confidence": 0.95,
+      "actions": [
+        "Verificar o histórico de transações e cobranças da conta no gateway de pagamento",
+        "Processar o estorno de uma das cobranças caso seja confirmada a duplicidade"
+      ]
+    },
+    {
+      "id": "bil-09",
+      "expected": "billing",
+      "predicted": "billing",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 3.0645,
+      "input_tokens": 1606,
+      "output_tokens": 189,
+      "cost_usd": 0.00191325,
+      "cache_hit": false,
+      "tags": [
+        "benign-trigger"
+      ],
+      "error": null,
+      "confidence": 0.95,
+      "actions": [
+        "Verificar el saldo pendiente y el estado de la suscripción del cliente",
+        "Generar un nuevo enlace de pago o proveer los medios de pago alternativos"
+      ]
+    },
+    {
+      "id": "bil-10",
+      "expected": "billing",
+      "predicted": "billing",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.9125,
+      "input_tokens": 1596,
+      "output_tokens": 127,
+      "cost_usd": 0.00167325,
+      "cache_hit": false,
+      "tags": [],
+      "error": null,
+      "confidence": 0.95,
+      "actions": [
+        "Revisar el historial de suscripciones y add-ons activos de la cuenta",
+        "Verificar transacciones recientes en la pasarela de pagos para el cargo de 'Nubbix Add-on Stock'",
+        "Ajustar o dar de baja el add-on si fue activado por error"
+      ]
+    },
+    {
+      "id": "tec-01",
+      "expected": "technical",
+      "predicted": "technical",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.6516,
+      "input_tokens": 1595,
+      "output_tokens": 139,
+      "cost_usd": 0.0017175,
+      "cache_hit": false,
+      "tags": [],
+      "error": null,
+      "confidence": 0.95,
+      "actions": [
+        "Revisar los logs y la lógica de descuento de stock en facturación tras la última actualización",
+        "Comprobar la configuración del módulo de stock y facturación de la cuenta",
+        "Evaluar un proceso de recalculo o sincronización para corregir el inventario desfasado",
+        "Escalar el fallo al equipo de desarrollo si afecta a la versión general"
+      ]
+    },
+    {
+      "id": "tec-02",
+      "expected": "technical",
+      "predicted": "technical",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.2977,
+      "input_tokens": 1592,
+      "output_tokens": 112,
+      "cost_usd": 0.001614,
+      "cache_hit": false,
+      "tags": [
+        "informal",
+        "typos"
+      ],
+      "error": null,
+      "confidence": 0.95,
+      "actions": [
+        "Solicitar al usuario el modelo del dispositivo móvil y la versión del sistema operativo (Android/iOS)",
+        "Revisar los registros de fallos (crash logs) de la app móvil en el módulo de ventas",
+        "Reportar el bug al equipo de desarrollo móvil con los datos del usuario"
+      ]
+    },
+    {
+      "id": "tec-03",
+      "expected": "technical",
+      "predicted": "technical",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.6408,
+      "input_tokens": 1590,
+      "output_tokens": 132,
+      "cost_usd": 0.0016875,
+      "cache_hit": false,
+      "tags": [
+        "multi-topic"
+      ],
+      "error": null,
+      "confidence": 0.8,
+      "actions": [
+        "Revisar el estado y logs de la integración con Mercado Pago para restablecer la conexión",
+        "Verificar en el sistema de facturación los cobros emitidos en octubre para la suscripción",
+        "Gestionar la devolución o ajuste del cobro duplicado si corresponde"
+      ]
+    },
+    {
+      "id": "tec-04",
+      "expected": "technical",
+      "predicted": "technical",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.8491,
+      "input_tokens": 1597,
+      "output_tokens": 97,
+      "cost_usd": 0.0015615,
+      "cache_hit": false,
+      "tags": [
+        "benign-trigger"
+      ],
+      "error": null,
+      "confidence": 0.95,
+      "actions": [
+        "Solicitar o revisar el archivo CSV que intenta importar el cliente",
+        "Verificar los encabezados y la codificación (UTF-8, separadores) en la fila 1"
+      ]
+    },
+    {
+      "id": "tec-05",
+      "expected": "technical",
+      "predicted": "technical",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.3288,
+      "input_tokens": 1603,
+      "output_tokens": 109,
+      "cost_usd": 0.001611,
+      "cache_hit": false,
+      "tags": [
+        "ambiguous"
+      ],
+      "error": null,
+      "confidence": 0.95,
+      "actions": [
+        "Revisar el detalle del error 10016 y la respuesta del webservice de AFIP",
+        "Verificar el estado del servicio de AFIP y los certificados digitales de la cuenta",
+        "Escalar a soporte técnico de nivel 2 si persiste"
+      ]
+    },
+    {
+      "id": "tec-06",
+      "expected": "technical",
+      "predicted": "technical",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.6535,
+      "input_tokens": 1591,
+      "output_tokens": 86,
+      "cost_usd": 0.00151575,
+      "cache_hit": false,
+      "tags": [
+        "lang-en"
+      ],
+      "error": null,
+      "confidence": 0.95,
+      "actions": [
+        "Check the Shopify integration status and authentication tokens",
+        "Inspect sync logs for errors in the last 48 hours",
+        "Trigger a manual sync of missing orders once resolved"
+      ]
+    },
+    {
+      "id": "tec-07",
+      "expected": "technical",
+      "predicted": "technical",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.3616,
+      "input_tokens": 1582,
+      "output_tokens": 102,
+      "cost_usd": 0.001569,
+      "cache_hit": false,
+      "tags": [
+        "lang-pt"
+      ],
+      "error": null,
+      "confidence": 0.95,
+      "actions": [
+        "Verificar os registros e consultas do relatório de fluxo de caixa da conta",
+        "Reproduzir a duplicidade de lançamentos no ambiente de suporte",
+        "Escalar para a equipe técnica se houver inconsistência no banco de dados"
+      ]
+    },
+    {
+      "id": "tec-08",
+      "expected": "technical",
+      "predicted": "technical",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.5694,
+      "input_tokens": 1590,
+      "output_tokens": 100,
+      "cost_usd": 0.0015675,
+      "cache_hit": false,
+      "tags": [
+        "multi-topic"
+      ],
+      "error": null,
+      "confidence": 0.88,
+      "actions": [
+        "Revisar logs de servidor del endpoint de invitaciones por el error 500",
+        "Verificar el estado y permisos de la cuenta del cliente",
+        "Intentar reenviar o crear la invitación manualmente si persiste el problema"
+      ]
+    },
+    {
+      "id": "tec-09",
+      "expected": "technical",
+      "predicted": "technical",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.5174,
+      "input_tokens": 1584,
+      "output_tokens": 95,
+      "cost_usd": 0.00154425,
+      "cache_hit": false,
+      "tags": [
+        "informal"
+      ],
+      "error": null,
+      "confidence": 0.95,
+      "actions": [
+        "Verificar el estado y métricas de rendimiento de los servidores",
+        "Revisar logs de latencia y consultas lentas en la cuenta del cliente",
+        "Consultar si la lentitud ocurre en alguna sección o red específica"
+      ]
+    },
+    {
+      "id": "tec-10",
+      "expected": "technical",
+      "predicted": "technical",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.7696,
+      "input_tokens": 1913,
+      "output_tokens": 157,
+      "cost_usd": 0.0020235,
+      "cache_hit": false,
+      "tags": [
+        "long",
+        "multi-topic"
+      ],
+      "error": null,
+      "confidence": 0.85,
+      "actions": [
+        "Revisar logs del servicio/conector local de impresión en la caja 2 y su puerto asignado",
+        "Verificar compatibilidad o bloqueos de firewall/antivirus tras la actualización de Windows",
+        "Investigar la discrepancia de medios de pago en el cierre de caja de la caja 2",
+        "Solicitar capturas de pantalla de la configuración y errores por correo electrónico"
+      ]
+    },
+    {
+      "id": "acc-01",
+      "expected": "account",
+      "predicted": "account",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.6213,
+      "input_tokens": 1590,
+      "output_tokens": 89,
+      "cost_usd": 0.00152625,
+      "cache_hit": false,
+      "tags": [],
+      "error": null,
+      "confidence": 0.95,
+      "actions": [
+        "Enviar guía para crear nuevos usuarios e invitar miembros",
+        "Enviar instructivo de configuración de roles y permisos para restringir acceso a reportes"
+      ]
+    },
+    {
+      "id": "acc-02",
+      "expected": "account",
+      "predicted": "account",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.6328,
+      "input_tokens": 1585,
+      "output_tokens": 112,
+      "cost_usd": 0.00160875,
+      "cache_hit": false,
+      "tags": [
+        "ambiguous"
+      ],
+      "error": null,
+      "confidence": 0.95,
+      "actions": [
+        "Revisar los registros de envío y entrega de correos de recuperación para la casilla del usuario",
+        "Verificar que la dirección de correo ingresada coincida con la registrada en la cuenta",
+        "Generar un enlace manual de restablecimiento de contraseña o asistir en el acceso tras validar identidad"
+      ]
+    },
+    {
+      "id": "acc-03",
+      "expected": "account",
+      "predicted": "account",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.3841,
+      "input_tokens": 1594,
+      "output_tokens": 100,
+      "cost_usd": 0.0015705,
+      "cache_hit": false,
+      "tags": [],
+      "error": null,
+      "confidence": 0.95,
+      "actions": [
+        "Solicitar documentación que acredite la titularidad o representación legal de la empresa",
+        "Iniciar el protocolo de cambio de administrador y reseteo de credenciales"
+      ]
+    },
+    {
+      "id": "acc-04",
+      "expected": "account",
+      "predicted": "account",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.5947,
+      "input_tokens": 1587,
+      "output_tokens": 91,
+      "cost_usd": 0.0015315,
+      "cache_hit": false,
+      "tags": [
+        "informal"
+      ],
+      "error": null,
+      "confidence": 0.93,
+      "actions": [
+        "Solicitar constancia de CUIT/inscripción para validar el cambio de datos fiscales",
+        "Actualizar el CUIT en la configuración de la cuenta del cliente"
+      ]
+    },
+    {
+      "id": "acc-05",
+      "expected": "account",
+      "predicted": "account",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.7994,
+      "input_tokens": 1595,
+      "output_tokens": 104,
+      "cost_usd": 0.00158625,
+      "cache_hit": false,
+      "tags": [],
+      "error": null,
+      "confidence": 0.95,
+      "actions": [
+        "Cerrar todas las sesiones activas de la cuenta de forma preventiva",
+        "Enviar enlace e instrucciones para restablecer contraseña y activar 2FA",
+        "Revisar logs de acceso sospechosos de la cuenta"
+      ]
+    },
+    {
+      "id": "acc-06",
+      "expected": "account",
+      "predicted": "account",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.228,
+      "input_tokens": 1590,
+      "output_tokens": 90,
+      "cost_usd": 0.00153,
+      "cache_hit": false,
+      "tags": [],
+      "error": null,
+      "confidence": 0.95,
+      "actions": [
+        "Enviar guía para deshabilitar o eliminar usuarios en el panel de administración",
+        "Verificar y revocar los accesos y sesiones activas del usuario"
+      ]
+    },
+    {
+      "id": "acc-07",
+      "expected": "account",
+      "predicted": "account",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.4033,
+      "input_tokens": 1595,
+      "output_tokens": 82,
+      "cost_usd": 0.00150375,
+      "cache_hit": false,
+      "tags": [
+        "multi-topic"
+      ],
+      "error": null,
+      "confidence": 0.8,
+      "actions": [
+        "Verificar la identidad del usuario y desbloquear el acceso a la cuenta",
+        "Enviar por correo la última factura pendiente de pago"
+      ]
+    },
+    {
+      "id": "acc-08",
+      "expected": "account",
+      "predicted": "account",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.6827,
+      "input_tokens": 1568,
+      "output_tokens": 94,
+      "cost_usd": 0.0015285,
+      "cache_hit": false,
+      "tags": [
+        "short",
+        "ambiguous"
+      ],
+      "error": null,
+      "confidence": 0.55,
+      "actions": [
+        "Solicitar al cliente más información sobre el problema para iniciar sesión (usuario, mensaje de error o captura)",
+        "Verificar el estado de la cuenta del usuario para comprobar si se encuentra bloqueada"
+      ]
+    },
+    {
+      "id": "acc-09",
+      "expected": "account",
+      "predicted": "account",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.7306,
+      "input_tokens": 1591,
+      "output_tokens": 112,
+      "cost_usd": 0.00161325,
+      "cache_hit": false,
+      "tags": [
+        "ambiguous"
+      ],
+      "error": null,
+      "confidence": 0.9,
+      "actions": [
+        "Identificar las dos cuentas asociadas a las sucursales del cliente",
+        "Verificar compatibilidad de datos y estructura de multi-sucursal",
+        "Contactar al cliente para coordinar el proceso de unificación"
+      ]
+    },
+    {
+      "id": "acc-10",
+      "expected": "account",
+      "predicted": "account",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.6477,
+      "input_tokens": 1594,
+      "output_tokens": 82,
+      "cost_usd": 0.001503,
+      "cache_hit": false,
+      "tags": [
+        "benign-trigger"
+      ],
+      "error": null,
+      "confidence": 0.95,
+      "actions": [
+        "Verificar la política de autenticación en dos pasos configurada en la cuenta del cliente",
+        "Enviar instrucciones sobre cómo desactivar o configurar el 2FA por usuario"
+      ]
+    },
+    {
+      "id": "oth-01",
+      "expected": "other",
+      "predicted": "other",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.7561,
+      "input_tokens": 1579,
+      "output_tokens": 78,
+      "cost_usd": 0.00147675,
+      "cache_hit": false,
+      "tags": [],
+      "error": null,
+      "confidence": 0.9,
+      "actions": [
+        "Derivar la consulta al equipo de ventas/comercial para informar sobre políticas de descuento para ONGs"
+      ]
+    },
+    {
+      "id": "oth-02",
+      "expected": "other",
+      "predicted": "other",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.181,
+      "input_tokens": 1588,
+      "output_tokens": 94,
+      "cost_usd": 0.0015435,
+      "cache_hit": false,
+      "tags": [
+        "informal",
+        "typos"
+      ],
+      "error": null,
+      "confidence": 0.9,
+      "actions": [
+        "Consultar la red de partners y contadores certificados en Rosario",
+        "Responder al cliente con los contactos disponibles o derivar al área de alianzas"
+      ]
+    },
+    {
+      "id": "oth-03",
+      "expected": "other",
+      "predicted": "other",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.4247,
+      "input_tokens": 1585,
+      "output_tokens": 98,
+      "cost_usd": 0.00155625,
+      "cache_hit": false,
+      "tags": [],
+      "error": null,
+      "confidence": 0.95,
+      "actions": [
+        "Derivar la consulta al equipo de ventas/pre-venta",
+        "Enviar información o material sobre las funcionalidades aplicables a gastronomía y delivery"
+      ]
+    },
+    {
+      "id": "oth-04",
+      "expected": "other",
+      "predicted": "other",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 3.1776,
+      "input_tokens": 1576,
+      "output_tokens": 151,
+      "cost_usd": 0.00174825,
+      "cache_hit": false,
+      "tags": [
+        "gibberish"
+      ],
+      "error": null,
+      "confidence": 0.3,
+      "actions": [
+        "Solicitar al cliente que aclare o describa su consulta"
+      ]
+    },
+    {
+      "id": "oth-05",
+      "expected": "other",
+      "predicted": "other",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 1.8678,
+      "input_tokens": 1577,
+      "output_tokens": 56,
+      "cost_usd": 0.00139275,
+      "cache_hit": false,
+      "tags": [
+        "gibberish"
+      ],
+      "error": null,
+      "confidence": 0.5,
+      "actions": [
+        "Consultar al cliente si necesita asistencia con la plataforma"
+      ]
+    },
+    {
+      "id": "oth-06",
+      "expected": "other",
+      "predicted": "other",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.2144,
+      "input_tokens": 1579,
+      "output_tokens": 78,
+      "cost_usd": 0.00147675,
+      "cache_hit": false,
+      "tags": [
+        "lang-en"
+      ],
+      "error": null,
+      "confidence": 0.95,
+      "actions": [
+        "Provide link to public API documentation and developer portal",
+        "Check if the user is an active customer or a prospect seeking integration capabilities"
+      ]
+    },
+    {
+      "id": "oth-07",
+      "expected": "other",
+      "predicted": "other",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.3604,
+      "input_tokens": 1587,
+      "output_tokens": 82,
+      "cost_usd": 0.00149775,
+      "cache_hit": false,
+      "tags": [
+        "ambiguous"
+      ],
+      "error": null,
+      "confidence": 0.95,
+      "actions": [
+        "Registrar la sugerencia de recordatorios de pago por WhatsApp en el backlog de producto",
+        "Agradecer al cliente por el feedback"
+      ]
+    },
+    {
+      "id": "oth-08",
+      "expected": "other",
+      "predicted": "other",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.4607,
+      "input_tokens": 1593,
+      "output_tokens": 95,
+      "cost_usd": 0.001551,
+      "cache_hit": false,
+      "tags": [
+        "ambiguous",
+        "multi-topic"
+      ],
+      "error": null,
+      "confidence": 0.95,
+      "actions": [
+        "Derivar la consulta al equipo de ventas y pre-venta",
+        "Enviar información sobre el servicio de migración de datos y lista de precios"
+      ]
+    },
+    {
+      "id": "oth-09",
+      "expected": "other",
+      "predicted": "other",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.7991,
+      "input_tokens": 1580,
+      "output_tokens": 64,
+      "cost_usd": 0.001425,
+      "cache_hit": false,
+      "tags": [],
+      "error": null,
+      "confidence": 0.95,
+      "actions": [
+        "Informar los horarios de atención del soporte telefónico los fines de semana"
+      ]
+    },
+    {
+      "id": "oth-10",
+      "expected": "other",
+      "predicted": "other",
+      "status": "ok",
+      "attempts": 1,
+      "latency_s": 2.8068,
+      "input_tokens": 1584,
+      "output_tokens": 140,
+      "cost_usd": 0.001713,
+      "cache_hit": false,
+      "tags": [],
+      "error": null,
+      "confidence": 0.95,
+      "actions": [
+        "Agradecer el mensaje y registrar el feedback positivo para el equipo de producto"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+
+== anthropic / v1  (n=40) ==
+accuracy 100% | macro 100% | JSON válido 1er intento 100% | errores 0 | bloqueados 0
+por categoría: billing 100% (10/10), technical 100% (10/10), account 100% (10/10), other 100% (10/10)
+latencia p50 2.57s p95 3.18s | tokens in 32589 out 12640 | costo $0.0096 | cache hits 0
+resultado: evals/results/20261023-015121_anthropic_v1.json
+
+== anthropic / v2  (n=40) ==
+accuracy 100% | macro 100% | JSON válido 1er intento 100% | errores 0 | bloqueados 0
+por categoría: billing 100% (10/10), technical 100% (10/10), account 100% (10/10), other 100% (10/10)
+latencia p50 1.63s p95 2.36s | tokens in 88214 out 6343 | costo $0.0120 | cache hits 0
+resultado: evals/results/20261023-015139_anthropic_v2.json
+
+== anthropic / v3  (n=40) ==
+accuracy 100% | macro 100% | JSON válido 1er intento 100% | errores 0 | bloqueados 0
+por categoría: billing 100% (10/10), technical 100% (10/10), account 100% (10/10), other 100% (10/10)
+latencia p50 1.61s p95 2.39s | tokens in 118071 out 6174 | costo $0.0149 | cache hits 0
+resultado: evals/results/20261023-015158_anthropic_v3.json
+
+== gemini / v1  (n=40) ==
+accuracy 95% | macro 95% | JSON válido 1er intento 100% | errores 0 | bloqueados 0
+por categoría: billing 100% (10/10), technical 90% (9/10), account 100% (10/10), other 90% (9/10)
+latencia p50 3.26s p95 5.41s | tokens in 12555 out 7266 | costo $0.0367 | cache hits 0
+resultado: evals/results/20261023-015237_gemini_v1.json
+
+== gemini / v2  (n=40) ==
+accuracy 98% | macro 98% | JSON válido 1er intento 100% | errores 0 | bloqueados 0
+por categoría: billing 100% (10/10), technical 90% (9/10), account 100% (10/10), other 100% (10/10)
+latencia p50 2.59s p95 3.45s | tokens in 45243 out 4016 | costo $0.0490 | cache hits 0
+resultado: evals/results/20261023-015305_gemini_v2.json
+
+== gemini / v3  (n=40) ==
+accuracy 100% | macro 100% | JSON válido 1er intento 100% | errores 0 | bloqueados 0
+por categoría: billing 100% (10/10), technical 100% (10/10), account 100% (10/10), other 100% (10/10)
+latencia p50 2.79s p95 4.95s | tokens in 63871 out 4376 | costo $0.0643 | cache hits 0
+resultado: evals/results/20261023-015337_gemini_v3.json
+
+comparativa: evals/results/comparison.md
+
+costo total de esta corrida: $0.1864 (tope $2.00)
