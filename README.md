@@ -386,21 +386,7 @@ fail-open: bloquear a un cliente real porque el filtro falló sería peor que de
 
 El proyecto se desarrolló con **Claude Code** (Claude Opus 5.5) como par de programación: Claude
 escribió el código con TDD y propuso alternativas; las decisiones de producto y de presupuesto
-fueron del autor. Flujo y prompts principales:
-
-1. *"Armemos un plan"*: sesión de diseño con preguntas sobre forma de trabajo, proveedores disponibles
-   y presupuesto. Resultado: [diseño](docs/superpowers/specs/2026-10-22-nubbix-triage-design.md)
-   revisado por un segundo agente antes de aprobarlo, y [plan de implementación](docs/superpowers/plans/2026-10-22-nubbix-triage.md) en 16 tareas.
-2. *"¿Qué opinás de ADK de Google?"*: se evaluó y descartó (sección 11).
-3. *"Codificás vos y vamos viendo cómo se arma el sistema"*: Claude implementó tarea por tarea
-   (test primero, verlo fallar, implementar), con un registro de las decisiones tomadas en el camino.
-4. Decisiones que tomó el autor y cambiaron el sistema: Anthropic + Gemini como proveedores, tope de
-   USD 2 por corrida, la **regla de desempate** (gana el tema que bloquea la operación), la revisión
-   de las etiquetas del dataset y el control de gasto con créditos prepagos en ambas plataformas.
-5. Hallazgos durante el desarrollo que cambiaron el diseño: la API de Anthropic dejó de aceptar
-   `temperature` (se rediseñó el adaptador); la accuracy saturada llevó a medir calibración; la caché
-   podía servir respuestas viejas al editar un prompt o saltear el guardrail de salida (ambos
-   corregidos con tests); los refusals del proveedor rompían el contrato (ahora devuelven el contrato bloqueado).
+fueron del autor.
 
 ## Variables de entorno
 
