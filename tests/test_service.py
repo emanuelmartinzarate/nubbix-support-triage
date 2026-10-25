@@ -195,3 +195,18 @@ def test_moderation_outage_is_recorded(settings_tmp):
     s = dataclasses.replace(settings_tmp, moderation_enabled=True)
     out = triage("me cobraron doble", s, provider=FakeProvider([FatalProviderError("400"), VALID]))
     assert out.status == "ok" and out.record["guardrail"]["reason"] == "moderation_unavailable"
+
+
+def test_record_splits_moderation_cost(settings_tmp):
+    s = dataclasses.replace(settings_tmp, moderation_enabled=True)
+    fp = FakeProvider(['{"flagged": false, "category": "none"}', VALID])
+    rec = triage("me cobraron doble", s, provider=fp).record
+    assert 0 < rec["moderation_cost_usd"] < rec["cost_usd"]
+    assert rec["moderation_cost_usd"] == pytest.approx(rec["cost_usd"] / 2)
+
+
+def test_cache_hit_cost_is_only_moderation(settings_tmp):
+    s = dataclasses.replace(settings_tmp, moderation_enabled=True, cache_enabled=True)
+    triage("me cobraron doble", s, provider=FakeProvider(['{"flagged": false, "category": "none"}', VALID]))
+    rec = triage("me cobraron doble", s, provider=FakeProvider(['{"flagged": false, "category": "none"}'])).record
+    assert rec["cache_hit"] is True and rec["cost_usd"] == rec["moderation_cost_usd"] > 0

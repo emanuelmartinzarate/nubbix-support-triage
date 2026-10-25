@@ -57,11 +57,6 @@ def test_cli_triage_error_exit_1(monkeypatch, settings_tmp, capsys):
     assert captured.out == "" and "Traceback" not in captured.err
 
 
-def test_cli_verbose_prints_record_to_stderr(wired, capsys):
-    assert cli.main(["--verbose", "factura"]) == 0
-    assert '"cost_usd"' in capsys.readouterr().err
-
-
 def test_cli_unwritable_metrics_exit_1_no_traceback(wired, monkeypatch, capsys):
     def deny(record, path):
         raise PermissionError(13, "Permission denied", str(path))
@@ -70,3 +65,24 @@ def test_cli_unwritable_metrics_exit_1_no_traceback(wired, monkeypatch, capsys):
     assert cli.main(["factura"]) == 1
     err = capsys.readouterr().err
     assert "métricas" in err and "Traceback" not in err
+
+
+def test_cli_verbose_summary_is_human_readable(wired, capsys):
+    assert cli.main(["--verbose", "factura"]) == 0
+    captured = capsys.readouterr()
+    assert json.loads(captured.out)["category"] == "billing"
+    assert "[métrica]" in captured.err and "e-0" not in captured.err
+    assert "costo USD 0.0000" in captured.err and "request_id" in captured.err
+
+
+def test_format_metric_breaks_down_cache_hit_cost():
+    record = {
+        "provider": "anthropic", "model": "claude-haiku-5-5", "prompt_version": "v3", "status": "ok",
+        "cache_hit": True, "input_tokens": 651, "output_tokens": 16, "latency_s": 1.4412,
+        "cost_usd": 7.31e-05, "moderation_cost_usd": 7.31e-05, "attempts": 0,
+        "guardrail": None, "request_id": "abc", "error": None,
+    }
+    text = cli.format_metric(record)
+    assert "caché: hit" in text and "tokens 651 in / 16 out" in text and "latencia 1.44 s" in text
+    assert "costo USD 0.0000731 (moderación USD 0.0000731 + triage USD 0, desde caché)" in text
+    assert "e-05" not in text and "request_id abc" in text

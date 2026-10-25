@@ -49,6 +49,7 @@ class _Usage:
     input_tokens: int = 0
     output_tokens: int = 0
     cost_usd: float = 0.0
+    moderation_cost_usd: float = 0.0
     latency_s: float = 0.0
     attempts: int = 0
     extra: dict = field(default_factory=dict)
@@ -76,6 +77,7 @@ def _record(
         "total_tokens": usage.input_tokens + usage.output_tokens,
         "latency_s": round(usage.latency_s, 4),
         "cost_usd": round(usage.cost_usd, 8),
+        "moderation_cost_usd": round(usage.moderation_cost_usd, 8),
         "attempts": usage.attempts,
         "cache_hit": cache_hit,
         "guardrail": guardrail,
@@ -122,7 +124,9 @@ def _check_input_layers(
         # Fail-open: si la moderación no responde, siguen las capas de prompt y de salida.
         return GuardResult(True, "moderation_unavailable", "moderation")
     if result is not None:
+        before = usage.cost_usd
         usage.add(result.input_tokens, result.output_tokens, result.latency_s)
+        usage.moderation_cost_usd += usage.cost_usd - before
     return verdict
 
 
