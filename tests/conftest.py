@@ -50,7 +50,7 @@ from triage.config import load_settings
 @pytest.fixture
 def settings_tmp(tmp_path, monkeypatch):
     """Settings aisladas: métricas y caché en tmp, sin leer .env, modelo con precio conocido."""
-    for var in ("LLM_PROVIDER", "PROMPT_VERSION", "CACHE_ENABLED", "GUARDRAILS_ENABLED", "MODERATION_ENABLED"):
+    for var in ("LLM_PROVIDER", "PROMPT_VERSION", "CACHE_ENABLED", "CACHE_TTL_S", "GUARDRAILS_ENABLED", "MODERATION_ENABLED"):
         monkeypatch.delenv(var, raising=False)
     base = load_settings(env_file=None)
     return dataclasses.replace(

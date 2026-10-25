@@ -27,6 +27,7 @@ class Settings:
     metrics_path: Path
     cache_dir: Path
     cache_enabled: bool
+    cache_ttl_s: int
     guardrails_enabled: bool
     moderation_enabled: bool
     max_query_chars: int
@@ -82,6 +83,7 @@ def load_settings(env_file: str | None = ".env") -> Settings:
         metrics_path=Path(_str("METRICS_PATH", "data/metrics.jsonl")),
         cache_dir=Path(_str("CACHE_DIR", "data/cache")),
         cache_enabled=_bool("CACHE_ENABLED", True),
+        cache_ttl_s=_num("CACHE_TTL_S", 0, int),
         guardrails_enabled=_bool("GUARDRAILS_ENABLED", True),
         moderation_enabled=_bool("MODERATION_ENABLED", True),
         max_query_chars=_num("MAX_QUERY_CHARS", 4000, int),

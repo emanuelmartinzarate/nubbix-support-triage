@@ -1,4 +1,6 @@
+import os
 import re
+import time
 
 import pytest
 
@@ -42,3 +44,23 @@ def test_disabled_cache_never_hits(tmp_path):
 def test_corrupt_file_is_miss(tmp_path):
     (tmp_path / "k.json").write_text("{roto", encoding="utf-8")
     assert ResponseCache(tmp_path, enabled=True).get("k") is None
+
+
+def _aged(tmp_path, seconds):
+    cache = ResponseCache(tmp_path, enabled=True)
+    cache.set("k", RESP)
+    old = time.time() - seconds
+    os.utime(tmp_path / "k.json", (old, old))
+    return tmp_path
+
+
+def test_ttl_zero_never_expires(tmp_path):
+    assert ResponseCache(_aged(tmp_path, 10 * 365 * 86400), enabled=True, ttl_s=0).get("k") == RESP
+
+
+def test_entry_older_than_ttl_is_miss(tmp_path):
+    assert ResponseCache(_aged(tmp_path, 7200), enabled=True, ttl_s=3600).get("k") is None
+
+
+def test_entry_within_ttl_is_hit(tmp_path):
+    assert ResponseCache(_aged(tmp_path, 60), enabled=True, ttl_s=3600).get("k") == RESP

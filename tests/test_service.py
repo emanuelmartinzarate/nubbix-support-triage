@@ -1,5 +1,6 @@
 import dataclasses
 import json
+import os
 
 import pytest
 
@@ -210,3 +211,12 @@ def test_cache_hit_cost_is_only_moderation(settings_tmp):
     triage("me cobraron doble", s, provider=FakeProvider(['{"flagged": false, "category": "none"}', VALID]))
     rec = triage("me cobraron doble", s, provider=FakeProvider(['{"flagged": false, "category": "none"}'])).record
     assert rec["cache_hit"] is True and rec["cost_usd"] == rec["moderation_cost_usd"] > 0
+
+
+def test_service_applies_cache_ttl(settings_tmp):
+    s = dataclasses.replace(settings_tmp, cache_enabled=True, cache_ttl_s=3600)
+    triage("me cobraron doble", s, provider=FakeProvider([VALID]))
+    for f in s.cache_dir.iterdir():
+        os.utime(f, (0, 0))
+    out = triage("me cobraron doble", s, provider=FakeProvider([VALID]))
+    assert out.record["cache_hit"] is False and out.record["attempts"] == 1

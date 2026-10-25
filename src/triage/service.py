@@ -182,7 +182,7 @@ def triage(
             )
 
     system, messages = build_messages(prompt, query, canary)
-    cache = ResponseCache(settings.cache_dir, settings.cache_enabled)
+    cache = ResponseCache(settings.cache_dir, settings.cache_enabled, settings.cache_ttl_s)
     key = cache_key(
         name, model, f"{version}:{prompt_fingerprint(prompt)}", settings.temperature, settings.max_tokens, query
     )

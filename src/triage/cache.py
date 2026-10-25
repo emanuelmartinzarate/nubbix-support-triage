@@ -4,6 +4,7 @@ import json
 import hashlib
 import os
 import tempfile
+import time
 from pathlib import Path
 
 from pydantic import ValidationError
@@ -21,9 +22,10 @@ def cache_key(
 
 
 class ResponseCache:
-    def __init__(self, cache_dir: Path, enabled: bool):
+    def __init__(self, cache_dir: Path, enabled: bool, ttl_s: int = 0):
         self.cache_dir = cache_dir
         self.enabled = enabled
+        self.ttl_s = ttl_s  # 0 = sin vencimiento; si no, edad máxima de la entrada (fecha del archivo)
 
     def _path(self, key: str) -> Path:
         return self.cache_dir / f"{key}.json"
@@ -31,8 +33,11 @@ class ResponseCache:
     def get(self, key: str) -> TriageResponse | None:
         if not self.enabled:
             return None
+        path = self._path(key)
         try:
-            return TriageResponse.model_validate_json(self._path(key).read_text(encoding="utf-8"))
+            if self.ttl_s > 0 and time.time() - path.stat().st_mtime > self.ttl_s:
+                return None
+            return TriageResponse.model_validate_json(path.read_text(encoding="utf-8"))
         except (OSError, ValidationError, ValueError):
             return None
 

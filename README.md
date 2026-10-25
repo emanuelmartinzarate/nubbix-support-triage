@@ -329,6 +329,37 @@ fecha de consulta de cada uno. Verificación a mano de la línea de arriba (Haik
 
 No se usa una base de datos: JSONL alcanza, se versiona y cualquiera puede recalcular los números.
 
+### Caché de respuestas
+
+`src/triage/cache.py` guarda cada respuesta validada en `data/cache/<md5>.json` (en Docker es un
+volumen, así que sobrevive entre corridas). La clave es el MD5 de proveedor, modelo, versión y huella
+del contenido del prompt, temperatura, `max_tokens` y el **texto exacto** de la consulta (solo se
+ignoran espacios al principio y al final). Si cambia una letra de la consulta o del YAML del prompt,
+es un miss.
+
+**Cómo saber si se usó:**
+
+- `--verbose` muestra `caché: hit` o `caché: miss`. Un hit tiene `intentos 0`, solo los tokens de la
+  moderación y `triage USD 0, desde caché`.
+- `--no-cache` ignora la caché y fuerza la llamada al LLM.
+- `ls -l data/cache/` lista las entradas con su fecha de creación; `grep -l "texto" data/cache/*`
+  encuentra la de una consulta puntual. `rm data/cache/*.json` la vacía.
+
+**Vencimiento: `CACHE_TTL_S`, en `0` (no vence).** En esta etapa la caché no tiene vencimiento a
+propósito:
+
+- La clave ya invalida todo lo que cambia la respuesta (modelo, prompt, parámetros). No hay datos del
+  cliente que envejezcan: la respuesta depende solo de la consulta y del prompt.
+- Hace reproducibles y gratis las re-corridas de evals y las pruebas repetidas, y protege el
+  presupuesto prepago del proyecto.
+- Las respuestas son borradores para un agente humano, no se envían solas al cliente.
+
+En producción se recomienda **ponerle vencimiento** (p. ej. `CACHE_TTL_S=86400`, un día): cuando el
+borrador dependa de información que cambia (estado de un incidente, políticas, base de conocimiento
+vía RAG), una respuesta vieja se seguiría sirviendo indefinidamente. Con `CACHE_TTL_S > 0`, una entrada
+más antigua que ese valor (según la fecha del archivo) cuenta como miss y se regenera. A escala también
+convendría una caché compartida con vencimiento nativo (p. ej. Redis) en lugar de archivos locales.
+
 ## 10. Seguridad
 
 Defensa en capas (`GUARDRAILS_ENABLED=true`):
@@ -452,4 +483,5 @@ Todas documentadas en [`.env.example`](.env.example). Las principales:
 | `PROMPT_VERSION` | `v3` | versión de prompt elegida por los evals |
 | `GUARDRAILS_ENABLED`, `MODERATION_ENABLED` | `true`, `true` | capas de seguridad |
 | `CACHE_ENABLED` | `true` | caché MD5 en `data/cache/` |
+| `CACHE_TTL_S` | `0` | vencimiento de la caché en segundos; `0` = no vence (ver sección 9) |
 | `EVAL_MAX_COST_USD` | `2.0` | tope de costo por corrida del runner |

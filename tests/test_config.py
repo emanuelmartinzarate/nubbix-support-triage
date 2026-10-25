@@ -4,7 +4,7 @@ from triage.config import ConfigError, load_settings
 
 ENV_VARS = [
     "LLM_PROVIDER", "TEMPERATURE", "CACHE_ENABLED", "MAX_TOKENS",
-    "EVAL_MAX_COST_USD", "MODERATION_ENABLED",
+    "EVAL_MAX_COST_USD", "MODERATION_ENABLED", "CACHE_TTL_S",
 ]
 
 
@@ -35,3 +35,12 @@ def test_invalid_number_raises_config_error(monkeypatch):
 def test_default_prompt_is_v3_chosen_by_evals(monkeypatch):
     monkeypatch.delenv("PROMPT_VERSION", raising=False)
     assert load_settings(env_file=None).prompt_version == "v3"
+
+
+def test_cache_never_expires_by_default():
+    assert load_settings(env_file=None).cache_ttl_s == 0
+
+
+def test_cache_ttl_from_env(monkeypatch):
+    monkeypatch.setenv("CACHE_TTL_S", "86400")
+    assert load_settings(env_file=None).cache_ttl_s == 86400
