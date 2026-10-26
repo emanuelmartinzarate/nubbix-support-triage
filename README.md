@@ -443,6 +443,17 @@ fail-open: bloquear a un cliente real porque el filtro falló sería peor que de
 - El guardrail de salida detecta fugas literales y compromisos con patrones; una paráfrasis del system
   prompt no la detecta (la cubren la capa 3 y la moderación).
 - Los precios de Gemini 3.8 Flash suben al doble desde 2027-01-01 (anotado en `pricing.yaml`).
+- **Fallback entre proveedores: manual, por configuración.** En esta primera instancia el fallback lo
+  hace el operador desde la config: si el proveedor activo falla (caída, 429 persistentes), se cambia
+  `LLM_PROVIDER` en el `.env` (o se usa `--provider` en el CLI / `"provider"` en la API) y el servicio
+  pasa al otro sin tocar código. El CLI toma el cambio en la próxima ejecución; la API lo toma al
+  recrear el contenedor (`docker compose up -d api`; `restart` no relee el `.env`). Funciona porque el
+  prompt v3 se validó con ambos proveedores (100% de accuracy en los dos, sección 8). Lo que no hay es
+  fallback **automático**: si el proveedor elegido falla después de los reintentos con backoff, ese
+  request termina en error (`exit 1` / HTTP 502) y queda registrado en `metrics.jsonl`. El siguiente
+  paso sería un proveedor que envuelva a otros con la misma interfaz `LLMProvider` y pase al siguiente
+  ante errores de infraestructura; los refusals de seguridad no deberían disparar el cambio (sería una
+  forma de esquivar el guardrail), y las métricas tendrían que registrar qué proveedor respondió.
 
 ## 13. Extra credits implementados
 
