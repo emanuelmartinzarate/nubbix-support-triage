@@ -23,7 +23,7 @@ promete reintegros ni acciones irreversibles en nombre de Nubbix.
 ## 2. Arquitectura
 
 ```mermaid
-flowchart LR
+flowchart TD
     Q[Ticket] --> E{Consulta vacía?}
     E -- sí --> X[exit 2 / HTTP 422]
     E -- no --> G1[Capa 1: heurística<br/>normalización + patrones ES/EN]
